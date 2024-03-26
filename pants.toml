@@ -1,0 +1,48 @@
+[GLOBAL]
+pants_version = "2.19.1"
+backend_packages = [
+    "pants.backend.build_files.fmt.black",
+    "pants.backend.python",
+    "pants.backend.experimental.python.lint.ruff",
+    "pants.backend.python.lint.black",
+]
+
+[generate-lockfiles]
+diff = true
+
+[export]
+py_resolve_format = "symlinked_immutable_virtualenv"
+resolve = ["default"]
+
+[python]
+interpreter_constraints = [">=3.11"]
+enable_resolves = true
+default_resolve = "default"
+
+[python.resolves]
+default = "lockfiles/python.lock"
+
+[python-repos]
+indexes = ["https://pypi.org/simple/"]
+
+[repl]
+shell = "ipython"
+
+[pytest]
+install_from_resolve = "default"
+requirements = ["//:root#pytest"]
+execution_slot_var = "PANTS_EXEC_SLOT"
+args = ["--no-header", "-s"]
+
+[ruff]
+interpreter_constraints = [">=3.11"]
+install_from_resolve = "default"
+requirements = ["//:root#ruff"]
+
+[black]
+interpreter_constraints = [">=3.11"]
+install_from_resolve = "default"
+requirements = ["//:root#black"]
+
+[anonymous-telemetry]
+enabled = false

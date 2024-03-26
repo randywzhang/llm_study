@@ -1,0 +1,71 @@
+
+target-version = "py39"
+src = ["src"]
+
+[lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "C90",
+    "N",
+    "ANN",
+    "ASYNC",
+    "S",
+    "B",
+    "A",
+    "ISC",
+    "G",
+    "INP",
+    "PIE",
+    "T20",
+    "PT",
+    "RSE",
+    "RET",
+    "SLOT",
+    "TCH",
+    "INT",
+    "ARG",
+    "PTH",
+    "ERA",
+    "PL",
+    "TRY",
+    "PERF",
+    "RUF",
+]
+ignore = [
+    "ANN101",
+    "ANN102",
+    "E501",
+    "PLC0415",
+    "PLR0904",
+    "PLR2004",
+    "PLR6301",
+    "PLW1514",
+    "PLW1641",
+    "PERF203",
+]
+unfixable = ["B", "PIE794", "ERA", "PERF102"]
+
+[lint.per-file-ignores]
+"**/tests/*.py" = [
+    "S101",   # asserts are expected in test files
+    "ANN201", # return typing info isn't really useful in test functions
+    "INP001", # tests don't need __init__.py to be collected
+]
+
+[lint.isort]
+known-first-party = []
+
+[lint.flake8-annotations]
+mypy-init-return = true
+
+[lint.flake8-bugbear]
+# Allow default arguments like, e.g., `data: List[str] = fastapi.Query(None)`.
+extend-immutable-calls = []
+
+[lint.flake8-tidy-imports]
+banned-module-level-imports = []
+
+[lint.pylint]
+max-args = 7
