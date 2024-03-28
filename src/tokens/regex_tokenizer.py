@@ -34,7 +34,6 @@ class RegexTokenizer(BasicBPETokenizer):
         regex_split_tokens: list[list[int]] = [
             str_tokenizer(split) for split in regex.findall(self.pattern, text)
         ]
-        print(regex_split_tokens)
 
         tokens: list[int] = []
 

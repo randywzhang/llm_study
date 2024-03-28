@@ -1,16 +1,8 @@
-import os
-from pathlib import Path
-
 import pytest
 
+from util import load_text_from_file
+
 from ..bpe import BasicBPETokenizer
-
-
-def load_test_text(filename: str = "test_text.txt") -> str:
-    module_path = Path(os.path.realpath(__file__)).parent
-    file_path = module_path / filename
-    with Path.open(file_path, "r", encoding="utf-8") as f:
-        return f.read()
 
 
 @pytest.fixture()
@@ -20,7 +12,7 @@ def basic_bpe_tokenizer() -> BasicBPETokenizer:
 
 class TestBasicBPETokenizer:
     def test_basic_bpe_tokenizer(self, basic_bpe_tokenizer: BasicBPETokenizer):
-        text = load_test_text()
+        text = load_text_from_file("test_text.txt", __file__)
         base_encoding = basic_bpe_tokenizer.encode(text)
         basic_bpe_tokenizer.train(text, 276)
         encoding = basic_bpe_tokenizer.encode(text)

@@ -1,17 +1,9 @@
-import os
-from pathlib import Path
-
 import pytest
+
+from util import load_text_from_file
 
 from ...tokens import gpt4
 from ..regex_tokenizer import RegexTokenizer
-
-
-def load_test_text(filename: str = "test_text.txt") -> str:
-    module_path = Path(os.path.realpath(__file__)).parent
-    file_path = module_path / filename
-    with Path.open(file_path, "r", encoding="utf-8") as f:
-        return f.read()
 
 
 @pytest.fixture()
@@ -21,7 +13,7 @@ def regex_tokenizer() -> RegexTokenizer:
 
 class TestRegexTokenizer:
     def test_regex_tokenizer(self, regex_tokenizer: RegexTokenizer):
-        text = load_test_text()
+        text = load_text_from_file("test_text.txt", __file__)
         base_encoding = regex_tokenizer.encode(text)
         regex_tokenizer.train(text, 276)
         encoding = regex_tokenizer.encode(text)
@@ -30,7 +22,7 @@ class TestRegexTokenizer:
         assert regex_tokenizer.decode(encoding) == text
 
     def test_special_char(self, regex_tokenizer: RegexTokenizer):
-        text = load_test_text("test_text_special_char.txt")
+        text = load_text_from_file("test_text_special_char.txt", __file__)
         regex_tokenizer.train(text, 300)
         encoding = regex_tokenizer.encode(text)
         decoding = regex_tokenizer.decode(encoding)
@@ -44,7 +36,7 @@ class TestRegexTokenizer:
         vocab (_mergeable_ranks) and checks that the bpe algorithm is
         correct.
         """
-        text = load_test_text("test_text_large.txt")
+        text = load_text_from_file("test_text_large.txt", __file__)
         mergeable_ranks = gpt4.GPT_4_CL100K_BASE_ENCODING._mergeable_ranks
         regex_tokenizer.merges = gpt4.recover_merges(mergeable_ranks)
         regex_tokenizer.vocab = mergeable_ranks
@@ -54,6 +46,6 @@ class TestRegexTokenizer:
         )
         gpt_encoding = gpt4.GPT_4_CL100K_BASE_ENCODING.encode(text)
         decoding = regex_tokenizer.decode(gpt_encoding)
-        gpt_decoding = gpt4.GPT_4_CL100K_BASE_ENCODING.decode(encoding)
 
         assert encoding == gpt_encoding
+        assert decoding == text
