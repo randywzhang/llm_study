@@ -40,10 +40,9 @@ class TestRegexTokenizer:
         mergeable_ranks = gpt4.GPT_4_CL100K_BASE_ENCODING._mergeable_ranks
         regex_tokenizer.merges = gpt4.recover_merges(mergeable_ranks)
         regex_tokenizer.vocab = mergeable_ranks
+        regex_tokenizer.base_tokenizer = gpt4.gpt_4_base_str_tokenizer
 
-        encoding = regex_tokenizer.encode(
-            text, str_tokenizer=gpt4.gpt_4_base_str_tokenizer
-        )
+        encoding = regex_tokenizer.encode(text)
         gpt_encoding = gpt4.GPT_4_CL100K_BASE_ENCODING.encode(text)
         decoding = regex_tokenizer.decode(gpt_encoding)
 

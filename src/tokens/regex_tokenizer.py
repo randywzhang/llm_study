@@ -9,30 +9,31 @@ from .gpt4 import GPT_4_SPLIT_PATTERN
 
 class RegexTokenizer(BasicBPETokenizer):
     _pattern: Pattern
+    _base_tokenizer: callable
 
     def __init__(
         self,
         pattern: str = GPT_4_SPLIT_PATTERN,
         next_token_id: int = BASE_VOCAB_SIZE,
+        base_tokenizer: Optional[callable] = None,
     ):
         self._pattern = regex.compile(pattern)
+        if not base_tokenizer:
+            base_tokenizer = self._utf8_tokenization
+        self.base_tokenizer = base_tokenizer
         super().__init__(next_token_id)
 
     def train(self, text: str, vocab_size: int, _verbose: bool = False) -> None:
         regex_split_tokens: list[list[int]] = [
-            self._utf8_tokenization(split)
-            for split in regex.findall(self.pattern, text)
+            self.base_tokenizer(split) for split in regex.findall(self.pattern, text)
         ]
 
         for _ in range(vocab_size - self.base_vocab_size):
             regex_split_tokens = self._create_new_token(regex_split_tokens)
 
-    def encode(self, text: str, str_tokenizer: Optional[callable] = None) -> list[int]:
-        if not str_tokenizer:
-            str_tokenizer = self._utf8_tokenization
-
+    def encode(self, text: str) -> list[int]:
         regex_split_tokens: list[list[int]] = [
-            str_tokenizer(split) for split in regex.findall(self.pattern, text)
+            self.base_tokenizer(split) for split in regex.findall(self.pattern, text)
         ]
 
         tokens: list[int] = []
@@ -121,3 +122,13 @@ class RegexTokenizer(BasicBPETokenizer):
     @pattern.setter
     def pattern(self, pattern: str) -> None:
         self._pattern = regex.compile(pattern)
+
+    @property
+    def base_tokenizer(self) -> callable:
+        if not self._base_tokenizer:
+            self._base_tokenizer = self._utf8_tokenization
+        return self._base_tokenizer
+
+    @base_tokenizer.setter
+    def base_tokenizer(self, tokenizer: callable) -> None:
+        self._base_tokenizer = tokenizer
