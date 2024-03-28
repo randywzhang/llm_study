@@ -2,13 +2,8 @@ import os
 from pathlib import Path
 
 import pytest
-from _pytest.config import Config
 
 from ..bpe import BasicBPETokenizer
-
-
-def pytest_configure(config: Config) -> None:
-    pass
 
 
 def load_test_text(filename: str = "test_text.txt") -> str:
@@ -18,13 +13,17 @@ def load_test_text(filename: str = "test_text.txt") -> str:
         return f.read()
 
 
+@pytest.fixture()
+def basic_bpe_tokenizer() -> BasicBPETokenizer:
+    return BasicBPETokenizer()
+
+
 class TestBasicBPETokenizer:
-    def test_basic_bpe_tokenizer(self):
-        tokenizer = BasicBPETokenizer()
+    def test_basic_bpe_tokenizer(self, basic_bpe_tokenizer: BasicBPETokenizer):
         text = load_test_text()
-        base_encoding = tokenizer.encode(text)
-        tokenizer.train(text, 276)
-        encoding = tokenizer.encode(text)
+        base_encoding = basic_bpe_tokenizer.encode(text)
+        basic_bpe_tokenizer.train(text, 276)
+        encoding = basic_bpe_tokenizer.encode(text)
 
         assert len(encoding) < len(base_encoding)
-        assert tokenizer.decode(encoding) == text
+        assert basic_bpe_tokenizer.decode(encoding) == text

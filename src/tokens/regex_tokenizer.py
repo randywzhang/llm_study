@@ -1,23 +1,10 @@
+from typing import Optional
+
 import regex
 from regex import Pattern
 
 from .bpe import BASE_VOCAB_SIZE, BasicBPETokenizer
-
-"""
-?i: - ignore case
-'[sdmt]|ll|ve|re - matches 's 'd 'm 't 'll 've 're for contractions/possessive
-[^\r\n\p{L}\p{N}] - NOT \r \n unicode letter, unicode number
-?+ - one or more times
-\p{L}+ - one or more unicode letters
-\p{N}{1,3} - 1 to 3 unicode numbers
- ? - optional space
-[^\s\p{L}\p{N}]++ - one or more characters that are NOT whitespace, letters, numbers
-[\r\n]* - zero or more \r or \n
-\s*[\r\n] - any whitespace followed by \r or \n
-\s+(?!\S) - matches one or more whitespace characters up to but not including the space before a non-whitespace character (' x' would not match, '  x' would match ' ')
-\s+ - matches one or more whitespace characters
-"""
-GPT_4_SPLIT_PATTERN = r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]++[\r\n]*|\s*[\r\n]|\s+(?!\S)|\s+"""
+from .gpt4 import GPT_4_SPLIT_PATTERN
 
 
 class RegexTokenizer(BasicBPETokenizer):
@@ -40,12 +27,61 @@ class RegexTokenizer(BasicBPETokenizer):
         for _ in range(vocab_size - self.base_vocab_size):
             regex_split_tokens = self._create_new_token(regex_split_tokens)
 
+    def encode(self, text: str, str_tokenizer: Optional[callable] = None) -> list[int]:
+        if not str_tokenizer:
+            str_tokenizer = self._utf8_tokenization
+
+        regex_split_tokens: list[list[int]] = [
+            str_tokenizer(split) for split in regex.findall(self.pattern, text)
+        ]
+        print(regex_split_tokens)
+
+        tokens: list[int] = []
+
+        for split in regex_split_tokens:
+            tokens.extend(self._encode_chunk(split))
+
+        return tokens
+
+    # this is the same as the basic encode() function
+    def _encode_chunk(self, split: list[int]) -> list[int]:
+        if len(split) < 2:
+            return split
+
+        i = 1
+        while len(split) > 1:
+            pair_counts = self._get_stats(split)
+
+            # get the pair that maps to the lowest index in self.merges
+            # (need to do earlier merges before later ones)
+            earliest_merged_pair = min(
+                pair_counts, key=lambda pair: self.merges.get(pair, float("inf"))
+            )
+            if earliest_merged_pair not in self.merges:
+                break  # no more possible merges
+
+            split = self._merge(
+                tokens=split,
+                token_id=self.merges[earliest_merged_pair],
+                pair=earliest_merged_pair,
+            )
+            i += 1
+
+        return split
+
     def _create_new_token(
         self,
         tokens: list[list[int]],
     ) -> list[list[int]]:
         # find pair to create new token out of
         bp_counts = self._get_stats_rt(tokens)
+        if not bp_counts:
+            # we have created tokens representing each split in
+            # the input text
+
+            # we can begin creating tokens representing "word" pairs
+            # or simply return. For now, let's return for simplicity
+            return tokens
         top_pair = max(bp_counts, key=bp_counts.get)
         self.merges[top_pair] = self.next_token_id
 
@@ -56,7 +92,7 @@ class RegexTokenizer(BasicBPETokenizer):
         self._vocab_update_flag = True
 
         # merge pair
-        return self._merge_rt(tokens, self.next_token_id, top_pair)
+        return self._merge_rt(tokens, self.merges[top_pair], top_pair)
 
     def _merge_rt(
         self,

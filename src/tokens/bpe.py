@@ -124,3 +124,8 @@ class BasicBPETokenizer:
 
         self._vocab_update_flag = False
         return self._vocab
+
+    @vocab.setter
+    def vocab(self, tiktoken_mergeable_ranks: dict[bytes, int]) -> None:
+        self._vocab = {v: k for k, v in tiktoken_mergeable_ranks.items()}
+        self._vocab_update_flag = False
