@@ -5,8 +5,6 @@ https://github.com/karpathy/minbpe/blob/master/exercise.md
 
 import tiktoken
 
-from .bpe import BASE_VOCAB_SIZE
-
 """
 ?i: - ignore case
 '[sdmt]|ll|ve|re - matches 's 'd 'm 't 'll 've 're for contractions/possessive
