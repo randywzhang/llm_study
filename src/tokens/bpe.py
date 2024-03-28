@@ -8,12 +8,12 @@ class BasicBPETokenizer:
     base_vocab_size: int
     next_token_id: int
 
-    def __init__(self, next_token_id: int = BASE_VOCAB_SIZE) -> None:
+    def __init__(self, base_vocab_size: int = BASE_VOCAB_SIZE) -> None:
         self._vocab = {}
         self._vocab_update_flag = True
         self.merges = {}
-        self.next_token_id = next_token_id
-        self.base_vocab_size = next_token_id
+        self.next_token_id = base_vocab_size
+        self.base_vocab_size = base_vocab_size
 
     # TODO: logging
     def train(self, text: str, vocab_size: int, _verbose: bool = False) -> None:

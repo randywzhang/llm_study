@@ -14,14 +14,14 @@ class RegexTokenizer(BasicBPETokenizer):
     def __init__(
         self,
         pattern: str = GPT_4_SPLIT_PATTERN,
-        next_token_id: int = BASE_VOCAB_SIZE,
+        base_vocab_size: int = BASE_VOCAB_SIZE,
         base_tokenizer: Optional[callable] = None,
     ):
         self._pattern = regex.compile(pattern)
         if not base_tokenizer:
             base_tokenizer = self._utf8_tokenization
         self.base_tokenizer = base_tokenizer
-        super().__init__(next_token_id)
+        super().__init__(base_vocab_size)
 
     def train(self, text: str, vocab_size: int, _verbose: bool = False) -> None:
         regex_split_tokens: list[list[int]] = [
