@@ -1,19 +1,26 @@
 BASE_VOCAB_SIZE = 256  # ASCII, TODO: consider multi-byte utf-8 chars
+BASE_VOCAB = {idx: bytes([idx]) for idx in range(256)}
 
 
 class BasicBPETokenizer:
-    _vocab: dict[int, str]
+    _vocab: dict[int, bytes]
+    _base_vocab: dict[int, bytes]  # defaults to utf-8 encoding for 0 - 255
     _vocab_update_flag: bool
     merges: dict[tuple[int, int], int]
     base_vocab_size: int
     next_token_id: int
 
-    def __init__(self, base_vocab_size: int = BASE_VOCAB_SIZE) -> None:
+    def __init__(
+        self,
+        base_vocab: dict[int, str] = BASE_VOCAB,
+        base_vocab_size: int = BASE_VOCAB_SIZE,
+    ) -> None:
         self._vocab = {}
-        self._vocab_update_flag = True
-        self.merges = {}
+        self._base_vocab = base_vocab
         self.next_token_id = base_vocab_size
         self.base_vocab_size = base_vocab_size
+        self._vocab_update_flag = True
+        self.merges = {}
 
     # TODO: logging
     def train(self, text: str, vocab_size: int, _verbose: bool = False) -> None:
@@ -115,7 +122,7 @@ class BasicBPETokenizer:
         builds a mapping from token encodings to the strings they represent
         """
         if self._vocab_update_flag:
-            vocab = {idx: bytes([idx]) for idx in range(256)}
+            vocab = self._base_vocab
             for (p0, p1), idx in self.merges.items():
                 # works because we build the mappings in the order they were
                 # created so that subsequent mappings can use previous ones

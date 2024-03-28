@@ -10,7 +10,8 @@
 //   ],
 //   "generated_with_requirements": [
 //     "black<25.0.0,>=24.2.0",
-//     "jax<0.5.0,>=0.4.25",
+//     "jax[cuda12-pip]<0.5.0,>=0.4.25",
+//     "jaxlib<0.5.0,>=0.4.25",
 //     "pytest-unordered<0.6.0,>=0.5.2",
 //     "pytest<9.0.0,>=8.0.2",
 //     "regex<2024.0.0,>=2023.12.25",
@@ -436,6 +437,75 @@
             "opt-einsum",
             "protobuf<4,>=3.13; extra == \"australis\"",
             "requests; extra == \"tpu\"",
+            "scipy>=1.11.1; python_version >= \"3.12\"",
+            "scipy>=1.9"
+          ],
+          "requires_python": ">=3.9",
+          "version": "0.4.25"
+        },
+        {
+          "artifacts": [
+            {
+              "algorithm": "sha256",
+              "hash": "dcfb71a7f559c13734584769ca30373bc4b73d0fe105790462370e49f35dcbe4",
+              "url": "https://files.pythonhosted.org/packages/b5/8f/02ec1b5a5165193e358b25c68a7922f670f9cc167c9788f686ce3cfd22fc/jaxlib-0.4.25-cp312-cp312-manylinux2014_x86_64.whl"
+            },
+            {
+              "algorithm": "sha256",
+              "hash": "0ce2a25263e7504d575e8ba5ba4f53aef6fe274679785bcf87ab06b0aaec0b90",
+              "url": "https://files.pythonhosted.org/packages/08/cb/3db59e7de925ac06d18b836d671fd7eed0e7a1d0a3207422144a14017c1b/jaxlib-0.4.25-cp311-cp311-manylinux2014_aarch64.whl"
+            },
+            {
+              "algorithm": "sha256",
+              "hash": "a0dd09cbb62583941872b6a198894e87a1b64d8e4dd6b53946dbb41d642b8f5f",
+              "url": "https://files.pythonhosted.org/packages/17/ae/399e885e4763118fd38e16f1a3354630dd518b71813e3350189ddc1b6179/jaxlib-0.4.25-cp311-cp311-manylinux2014_x86_64.whl"
+            },
+            {
+              "algorithm": "sha256",
+              "hash": "425d6f3fa57ea1d1674ae84b5a3d3588ba0937f3c47fd4f166eb84c4240887b8",
+              "url": "https://files.pythonhosted.org/packages/1b/20/a1ac8081c4e1edee1681cbafc39bb0ae611367cb7ea351b83679b1d0d84f/jaxlib-0.4.25-cp312-cp312-macosx_10_14_x86_64.whl"
+            },
+            {
+              "algorithm": "sha256",
+              "hash": "37da780cb545ca210bfa0402b5081452ad830bb06fe9e970fd16ad14d2fdc6a6",
+              "url": "https://files.pythonhosted.org/packages/78/24/dcaea0b9035a6d7191a9e9614f84fbaa0e26759233c1973ffe47342549e4/jaxlib-0.4.25-cp311-cp311-macosx_10_14_x86_64.whl"
+            },
+            {
+              "algorithm": "sha256",
+              "hash": "0df7e2193b216e195dfc7a8aa14527eb52614ec3ba4c59a199af2f17195ae1c1",
+              "url": "https://files.pythonhosted.org/packages/7d/61/6211ea56732abea539ad1178dfa15d3557b4ae63a1825cc30dbc5a2a570f/jaxlib-0.4.25-cp311-cp311-macosx_11_0_arm64.whl"
+            },
+            {
+              "algorithm": "sha256",
+              "hash": "c4e3bc32aea275e025e762612216954626478c9cf5c44131e248cdd17e361efd",
+              "url": "https://files.pythonhosted.org/packages/ca/ec/ee0be7c9b2d38fb4ca31312d004ac83290341baf66a321d9941baff9a119/jaxlib-0.4.25-cp312-cp312-manylinux2014_aarch64.whl"
+            },
+            {
+              "algorithm": "sha256",
+              "hash": "0e97542bbd89f4316d2feb599119d8a43440ca151b7a165eff0fc127cf4512e7",
+              "url": "https://files.pythonhosted.org/packages/e3/3d/b825e3d84d292044309730db59715e4e87926c579c04fb6e3972fd32df57/jaxlib-0.4.25-cp312-cp312-macosx_11_0_arm64.whl"
+            }
+          ],
+          "project_name": "jaxlib",
+          "requires_dists": [
+            "ml-dtypes>=0.2.0",
+            "numpy>=1.22",
+            "nvidia-cublas-cu11>=11.11; extra == \"cuda11-pip\"",
+            "nvidia-cublas-cu12; extra == \"cuda12-pip\"",
+            "nvidia-cuda-cupti-cu11>=11.8; extra == \"cuda11-pip\"",
+            "nvidia-cuda-cupti-cu12; extra == \"cuda12-pip\"",
+            "nvidia-cuda-nvcc-cu11>=11.8; extra == \"cuda11-pip\"",
+            "nvidia-cuda-nvcc-cu12; extra == \"cuda12-pip\"",
+            "nvidia-cuda-runtime-cu11>=11.8; extra == \"cuda11-pip\"",
+            "nvidia-cuda-runtime-cu12; extra == \"cuda12-pip\"",
+            "nvidia-cudnn-cu11>=8.8; extra == \"cuda11-pip\"",
+            "nvidia-cudnn-cu12>=8.9; extra == \"cuda12-pip\"",
+            "nvidia-cufft-cu11>=10.9; extra == \"cuda11-pip\"",
+            "nvidia-cufft-cu12; extra == \"cuda12-pip\"",
+            "nvidia-cusolver-cu11>=11.4; extra == \"cuda11-pip\"",
+            "nvidia-cusolver-cu12; extra == \"cuda12-pip\"",
+            "nvidia-cusparse-cu11>=11.7; extra == \"cuda11-pip\"",
+            "nvidia-cusparse-cu12; extra == \"cuda12-pip\"",
             "scipy>=1.11.1; python_version >= \"3.12\"",
             "scipy>=1.9"
           ],
@@ -1300,7 +1370,8 @@
   "prefer_older_binary": false,
   "requirements": [
     "black<25.0.0,>=24.2.0",
-    "jax<0.5.0,>=0.4.25",
+    "jax[cuda12-pip]<0.5.0,>=0.4.25",
+    "jaxlib<0.5.0,>=0.4.25",
     "pytest-unordered<0.6.0,>=0.5.2",
     "pytest<9.0.0,>=8.0.2",
     "regex<2024.0.0,>=2023.12.25",

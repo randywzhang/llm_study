@@ -3,7 +3,7 @@ from typing import Optional
 import regex
 from regex import Pattern
 
-from .bpe import BASE_VOCAB_SIZE, BasicBPETokenizer
+from .bpe import BASE_VOCAB, BASE_VOCAB_SIZE, BasicBPETokenizer
 from .gpt4 import GPT_4_SPLIT_PATTERN
 
 
@@ -14,6 +14,7 @@ class RegexTokenizer(BasicBPETokenizer):
     def __init__(
         self,
         pattern: str = GPT_4_SPLIT_PATTERN,
+        base_vocab: dict[int, str] = BASE_VOCAB,
         base_vocab_size: int = BASE_VOCAB_SIZE,
         base_tokenizer: Optional[callable] = None,
     ):
@@ -21,7 +22,7 @@ class RegexTokenizer(BasicBPETokenizer):
         if not base_tokenizer:
             base_tokenizer = self._utf8_tokenization
         self.base_tokenizer = base_tokenizer
-        super().__init__(base_vocab_size)
+        super().__init__(base_vocab=base_vocab, base_vocab_size=base_vocab_size)
 
     def train(self, text: str, vocab_size: int, _verbose: bool = False) -> None:
         regex_split_tokens: list[list[int]] = [
