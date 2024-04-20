@@ -2,6 +2,10 @@ BASE_VOCAB_SIZE = 256  # ASCII, TODO: consider multi-byte utf-8 chars
 BASE_VOCAB = {idx: bytes([idx]) for idx in range(256)}
 
 
+class TokenizerEncodingError(Exception):
+    pass
+
+
 class BasicBPETokenizer:
     _vocab: dict[int, bytes]
     _base_vocab: dict[int, bytes]  # defaults to utf-8 encoding for 0 - 255
@@ -26,10 +30,18 @@ class BasicBPETokenizer:
     def train(self, text: str, vocab_size: int, _verbose: bool = False) -> None:
         tokens = self._utf8_tokenization(text)
 
-        for _ in range(vocab_size - self.base_vocab_size):
+        for pair, idx in self.merges.items():
+            tokens = self._merge(tokens, idx, pair)
+
+        num_additional_vocab = vocab_size - self.next_token_id
+
+        for _ in range(num_additional_vocab):
             tokens = self._create_new_token(tokens)
 
-    def encode(self, text: str) -> list[int]:
+        # refresh vocab
+        self._vocab = self.vocab
+
+    def encode(self, text: str, validate: bool = False) -> list[int]:
         tokens = self._utf8_tokenization(text)
         if len(tokens) < 2:
             return tokens
@@ -50,6 +62,10 @@ class BasicBPETokenizer:
                 token_id=self.merges[earliest_merged_pair],
                 pair=earliest_merged_pair,
             )
+
+        if validate:
+            if self.decode(tokens) != text:
+                raise TokenizerEncodingError
 
         return tokens
 
@@ -122,10 +138,18 @@ class BasicBPETokenizer:
         builds a mapping from token encodings to the strings they represent
         """
         if self._vocab_update_flag:
-            vocab = self._base_vocab
-            for (p0, p1), idx in self.merges.items():
+            vocab = self._vocab
+            if not vocab:
+                vocab = self._base_vocab
+            for (p0, p1), idx in list(self.merges.items())[
+                len(self._vocab) - self.base_vocab_size :
+            ]:
+                # slices the merge list to give only merges that haven't been
+                # added to the vocabulary - Python 3.7+ dict items is insertion ordered
+
                 # works because we build the mappings in the order they were
                 # created so that subsequent mappings can use previous ones
+
                 vocab[idx] = vocab[p0] + vocab[p1]
             self._vocab = vocab
 

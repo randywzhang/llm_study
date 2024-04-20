@@ -11,7 +11,15 @@
 //   "generated_with_requirements": [
 //     "black<25.0.0,>=24.2.0",
 //     "jax[cuda12-pip]<0.5.0,>=0.4.25",
-//     "jaxlib<0.5.0,>=0.4.25",
+//     "jaxlib[cuda12-pip]<0.5.0,>=0.4.25",
+//     "nvidia-cublas-cu12[cuda12-pip]<13.0.0,>=12.4.5.8",
+//     "nvidia-cuda-cupti-cu12[cuda12-pip]<13.0.0,>=12.4.127",
+//     "nvidia-cuda-nvcc-cu12[cuda12-pip]<13.0.0,>=12.4.131",
+//     "nvidia-cuda-runtime-cu12[cuda12-pip]<13.0.0,>=12.4.127",
+//     "nvidia-cudnn-cu12[cuda12-pip]<9.0.0,>=8.9.7.29",
+//     "nvidia-cufft-cu12[cuda12-pip]<12.0.0,>=11.2.1.3",
+//     "nvidia-cusolver-cu12[cuda12-pip]<12.0.0,>=11.6.1.9",
+//     "nvidia-nccl-cu12[cuda12-pip]>=2.18.1",
 //     "pytest-unordered<0.6.0,>=0.5.2",
 //     "pytest<9.0.0,>=8.0.2",
 //     "regex<2024.0.0,>=2023.12.25",
@@ -38,43 +46,43 @@
           "artifacts": [
             {
               "algorithm": "sha256",
-              "hash": "41622020d7120e01d377f74249e677039d20e6344ff5851de8a10f11f513bf93",
-              "url": "https://files.pythonhosted.org/packages/4d/ea/31770a7e49f3eedfd8cd7b35e78b3a3aaad860400f8673994bc988318135/black-24.3.0-py3-none-any.whl"
+              "hash": "74eb9b5420e26b42c00a3ff470dc0cd144b80a766128b1771d07643165e08d0e",
+              "url": "https://files.pythonhosted.org/packages/6c/4c/3e898e42fb0e14f2639583b10702b69d145c42bdd97e017950479055dd4a/black-24.4.0-py3-none-any.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "aadf7a02d947936ee418777e0247ea114f78aff0d0959461057cae8a04f20597",
-              "url": "https://files.pythonhosted.org/packages/46/5f/30398c5056cb72f883b32b6520ad00042a9d0454b693f70509867db03a80/black-24.3.0-cp311-cp311-macosx_11_0_arm64.whl"
+              "hash": "4396ca365a4310beef84d446ca5016f671b10f07abdba3e4e4304218d2c71d33",
+              "url": "https://files.pythonhosted.org/packages/07/fe/d7b94a17094f646491b27f43b0259a7916597e544fbcfd6bb638a823e29d/black-24.4.0-cp312-cp312-macosx_11_0_arm64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "4f1373a7808a8f135b774039f61d59e4be7eb56b2513d3d2f02a8b9365b8a8a9",
-              "url": "https://files.pythonhosted.org/packages/68/df/ceea5828be9c4931cb5a75b7e8fb02971f57524da7a16dfec0d4d575327f/black-24.3.0-cp311-cp311-macosx_10_9_x86_64.whl"
+              "hash": "5cd5b4f76056cecce3e69b0d4c228326d2595f506797f40b9233424e2524c070",
+              "url": "https://files.pythonhosted.org/packages/0a/ef/37666bae20ba77d9a8420867077879fc0fd26e60e734ba5ee5ebc46f72fb/black-24.4.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "65c02e4ea2ae09d16314d30912a58ada9a5c4fdfedf9512d23326128ac08ac3d",
-              "url": "https://files.pythonhosted.org/packages/6b/59/498885b279e890f656ea4300a2671c964acb6d97994ea626479c2e5501b4/black-24.3.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+              "hash": "f95cece33329dc4aa3b0e1a771c41075812e46cf3d6e3f1dfe3d91ff09826ed2",
+              "url": "https://files.pythonhosted.org/packages/42/d3/8fa632ab059f2a79f8dd2e2910d245b045bca847373a9017c442e206df49/black-24.4.0-cp312-cp312-macosx_10_9_x86_64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "a0c9c4a0771afc6919578cec71ce82a3e31e054904e7197deacbc9382671c41f",
-              "url": "https://files.pythonhosted.org/packages/8f/5f/bac24a952668c7482cfdb4ebf91ba57a796c9da8829363a772040c1a3312/black-24.3.0.tar.gz"
+              "hash": "44d99dfdf37a2a00a6f7a8dcbd19edf361d056ee51093b2445de7ca09adac965",
+              "url": "https://files.pythonhosted.org/packages/57/bc/c7f2e1665805b79476c4f10b554d0f8659b5f19f49d86eb5ef6c876f15ba/black-24.4.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "c7ed6668cbbfcd231fa0dc1b137d3e40c04c7f786e626b405c62bcd5db5857e4",
-              "url": "https://files.pythonhosted.org/packages/a8/05/8dd038e30caadab7120176d4bc109b7ca2f4457f12eef746b0560a583458/black-24.3.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+              "hash": "64e60a7edd71fd542a10a9643bf369bfd2644de95ec71e86790b063aa02ff745",
+              "url": "https://files.pythonhosted.org/packages/97/a6/f5857f79bba7eca05ebdc7e27e3447e3d2fc23898bb04f34bf3ff5dfb2db/black-24.4.0-cp311-cp311-macosx_11_0_arm64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "2818cf72dfd5d289e48f37ccfa08b460bf469e67fb7c4abb07edc2e9f16fb63f",
-              "url": "https://files.pythonhosted.org/packages/b6/c6/1d174efa9ff02b22d0124c73fc5f4d4fb006d0d9a081aadc354d05754a13/black-24.3.0-cp312-cp312-macosx_10_9_x86_64.whl"
+              "hash": "8e5537f456a22cf5cfcb2707803431d2feeb82ab3748ade280d6ccd0b40ed2e8",
+              "url": "https://files.pythonhosted.org/packages/cb/95/4a02a0fed559bf638001f6bf4e4c9d685111db959d221485e7e27c91e954/black-24.4.0-cp311-cp311-macosx_10_9_x86_64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "4acf672def7eb1725f41f38bf6bf425c8237248bb0804faa3965c036f7672d11",
-              "url": "https://files.pythonhosted.org/packages/d9/ed/704731afffe460b8ff0672623b40fce9fe569f2ee617c15857e4d4440a3a/black-24.3.0-cp312-cp312-macosx_11_0_arm64.whl"
+              "hash": "f07b69fda20578367eaebbd670ff8fc653ab181e1ff95d84497f9fa20e7d0641",
+              "url": "https://files.pythonhosted.org/packages/e7/29/58e93d7775544b6058f1df71dce4a8f5b039c2f8e381d3c695444c3d3d5f/black-24.4.0.tar.gz"
             }
           ],
           "project_name": "black",
@@ -94,7 +102,7 @@
             "uvloop>=0.15.2; extra == \"uvloop\""
           ],
           "requires_python": ">=3.8",
-          "version": "24.3.0"
+          "version": "24.4.0"
         },
         {
           "artifacts": [
@@ -310,13 +318,13 @@
           "artifacts": [
             {
               "algorithm": "sha256",
-              "hash": "5ffa845303983e7a0b7ae17636509bc97997d58afeafa72fb141a17b152284cb",
-              "url": "https://files.pythonhosted.org/packages/8b/69/acdf492db27dea7be5c63053230130e0574fd8a376de3555d5f8bbc3d3ad/filelock-3.13.3-py3-none-any.whl"
+              "hash": "404e5e9253aa60ad457cae1be07c0f0ca90a63931200a47d9b6a6af84fd7b45f",
+              "url": "https://files.pythonhosted.org/packages/6e/b5/15b3b36f298bcbc0be82a371ac744f4f5a10309ade0b8bbde286598dd612/filelock-3.13.4-py3-none-any.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "a79895a25bbefdf55d1a2a0a80968f7dbb28edcd6d4234a0afb3f37ecde4b546",
-              "url": "https://files.pythonhosted.org/packages/db/97/3f028f216da17ab0500550a6bb0f26bf39b07848348f63cce44b89829af9/filelock-3.13.3.tar.gz"
+              "hash": "d13f466618bfde72bd2c18255e269f72542c6e70e7bac83a0232d6b1cc5c8cf4",
+              "url": "https://files.pythonhosted.org/packages/38/ff/877f1dbe369a2b9920e2ada3c9ab81cf6fe8fa2dce45f40cad510ef2df62/filelock-3.13.4.tar.gz"
             }
           ],
           "project_name": "filelock",
@@ -334,25 +342,25 @@
             "typing-extensions>=4.8; python_version < \"3.11\" and extra == \"typing\""
           ],
           "requires_python": ">=3.8",
-          "version": "3.13.3"
+          "version": "3.13.4"
         },
         {
           "artifacts": [
             {
               "algorithm": "sha256",
-              "hash": "c05567e9c24a6b9faaa835c4821bad0590fbb9d5779e7caa6e1cc4978e7eb24f",
-              "url": "https://files.pythonhosted.org/packages/c2/e7/a82b05cf63a603df6e68d59ae6a68bf5064484a0718ea5033660af4b54a9/idna-3.6-py3-none-any.whl"
+              "hash": "82fee1fc78add43492d3a1898bfa6d8a904cc97d8427f683ed8e798d07761aa0",
+              "url": "https://files.pythonhosted.org/packages/e5/3e/741d8c82801c347547f8a2a06aa57dbb1992be9e948df2ea0eda2c8b79e8/idna-3.7-py3-none-any.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca",
-              "url": "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
+              "hash": "028ff3aadf0609c1fd278d8ea3089299412a7a8b9bd005dd08b9f8285bcb5cfc",
+              "url": "https://files.pythonhosted.org/packages/21/ed/f86a79a07470cb07819390452f178b3bef1d375f2ec021ecfc709fc7cf07/idna-3.7.tar.gz"
             }
           ],
           "project_name": "idna",
           "requires_dists": [],
           "requires_python": ">=3.5",
-          "version": "3.6"
+          "version": "3.7"
         },
         {
           "artifacts": [
@@ -376,64 +384,53 @@
           "artifacts": [
             {
               "algorithm": "sha256",
-              "hash": "8158c837e5ecc195074b421609e85329a962785b36f9fe5ff53e844e8ad87dbc",
-              "url": "https://files.pythonhosted.org/packages/ad/29/37cc2d58775917e6da532ef59cd3a66133d4de73fce1c16852e8475e5411/jax-0.4.25-py3-none-any.whl"
+              "hash": "50dc795148ee6b0735b48b477e5abc556aa3a4c7af5d6940dad08024a908b02f",
+              "url": "https://files.pythonhosted.org/packages/dc/d9/f387d9dfb2cf00f814b24e0f8bf6f4c68ae01870994dc436993fadd73563/jax-0.4.26-py3-none-any.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "a8ee189c782de2b7b2ffb64a8916da380b882a617e2769aa429b71d79747b982",
-              "url": "https://files.pythonhosted.org/packages/14/45/f7551fed86ec511a4635551687843789e4c6180e958a7d51241266897c57/jax-0.4.25.tar.gz"
+              "hash": "2cce025d0a279ec630d550524749bc8efe25d2ff47240d2a7d4cfbc5090c5383",
+              "url": "https://files.pythonhosted.org/packages/8a/e0/4c36ac9c5661747e90c2f50fa38eaf025a4f778532f8686e9ee569bb0775/jax-0.4.26.tar.gz"
             }
           ],
           "project_name": "jax",
           "requires_dists": [
             "importlib-metadata>=4.6; python_version < \"3.10\"",
-            "jax-cuda12-plugin==0.4.25; extra == \"cuda12\"",
+            "jax-cuda12-plugin==0.4.26; extra == \"cuda12\"",
             "jaxlib==0.4.20; extra == \"minimum-jaxlib\"",
-            "jaxlib==0.4.24; extra == \"ci\"",
-            "jaxlib==0.4.25+cuda11.cudnn86; extra == \"cuda\"",
-            "jaxlib==0.4.25+cuda11.cudnn86; extra == \"cuda11-cudnn86\"",
-            "jaxlib==0.4.25+cuda11.cudnn86; extra == \"cuda11-local\"",
-            "jaxlib==0.4.25+cuda11.cudnn86; extra == \"cuda11-pip\"",
-            "jaxlib==0.4.25+cuda12.cudnn89; extra == \"cuda12-local\"",
-            "jaxlib==0.4.25+cuda12.cudnn89; extra == \"cuda12-pip\"",
-            "jaxlib==0.4.25; extra == \"cpu\"",
-            "jaxlib==0.4.25; extra == \"cuda12\"",
-            "jaxlib==0.4.25; extra == \"tpu\"",
-            "libtpu-nightly==0.1.dev20240224; extra == \"tpu\"",
+            "jaxlib==0.4.25; extra == \"ci\"",
+            "jaxlib==0.4.26+cuda12.cudnn89; extra == \"cuda\"",
+            "jaxlib==0.4.26+cuda12.cudnn89; extra == \"cuda12-cudnn89\"",
+            "jaxlib==0.4.26+cuda12.cudnn89; extra == \"cuda12-local\"",
+            "jaxlib==0.4.26+cuda12.cudnn89; extra == \"cuda12-pip\"",
+            "jaxlib==0.4.26; extra == \"cpu\"",
+            "jaxlib==0.4.26; extra == \"cuda12\"",
+            "jaxlib==0.4.26; extra == \"tpu\"",
+            "libtpu-nightly==0.1.dev20240403; extra == \"tpu\"",
             "ml-dtypes>=0.2.0",
             "numpy>=1.22",
             "numpy>=1.23.2; python_version >= \"3.11\"",
             "numpy>=1.26.0; python_version >= \"3.12\"",
-            "nvidia-cublas-cu11>=11.11; extra == \"cuda11-pip\"",
-            "nvidia-cublas-cu12>=12.3.4.1; extra == \"cuda12\"",
-            "nvidia-cublas-cu12>=12.3.4.1; extra == \"cuda12-pip\"",
-            "nvidia-cuda-cupti-cu11>=11.8; extra == \"cuda11-pip\"",
-            "nvidia-cuda-cupti-cu12>=12.3.101; extra == \"cuda12\"",
-            "nvidia-cuda-cupti-cu12>=12.3.101; extra == \"cuda12-pip\"",
-            "nvidia-cuda-nvcc-cu11>=11.8; extra == \"cuda11-pip\"",
-            "nvidia-cuda-nvcc-cu12>=12.3.107; extra == \"cuda12\"",
-            "nvidia-cuda-nvcc-cu12>=12.3.107; extra == \"cuda12-pip\"",
-            "nvidia-cuda-runtime-cu11>=11.8; extra == \"cuda11-pip\"",
-            "nvidia-cuda-runtime-cu12>=12.3.101; extra == \"cuda12\"",
-            "nvidia-cuda-runtime-cu12>=12.3.101; extra == \"cuda12-pip\"",
-            "nvidia-cudnn-cu11>=8.8; extra == \"cuda11-pip\"",
-            "nvidia-cudnn-cu12>=8.9.7.29; extra == \"cuda12\"",
-            "nvidia-cudnn-cu12>=8.9.7.29; extra == \"cuda12-pip\"",
-            "nvidia-cufft-cu11>=10.9; extra == \"cuda11-pip\"",
-            "nvidia-cufft-cu12>=11.0.12.1; extra == \"cuda12\"",
-            "nvidia-cufft-cu12>=11.0.12.1; extra == \"cuda12-pip\"",
-            "nvidia-cusolver-cu11>=11.4; extra == \"cuda11-pip\"",
-            "nvidia-cusolver-cu12>=11.5.4.101; extra == \"cuda12\"",
-            "nvidia-cusolver-cu12>=11.5.4.101; extra == \"cuda12-pip\"",
-            "nvidia-cusparse-cu11>=11.7; extra == \"cuda11-pip\"",
-            "nvidia-cusparse-cu12>=12.2.0.103; extra == \"cuda12\"",
-            "nvidia-cusparse-cu12>=12.2.0.103; extra == \"cuda12-pip\"",
-            "nvidia-nccl-cu11>=2.18.3; extra == \"cuda11-pip\"",
-            "nvidia-nccl-cu12>=2.19.3; extra == \"cuda12\"",
-            "nvidia-nccl-cu12>=2.19.3; extra == \"cuda12-pip\"",
-            "nvidia-nvjitlink-cu12>=12.3.101; extra == \"cuda12\"",
-            "nvidia-nvjitlink-cu12>=12.3.101; extra == \"cuda12-pip\"",
+            "nvidia-cublas-cu12>=12.1.3.1; extra == \"cuda12\"",
+            "nvidia-cublas-cu12>=12.1.3.1; extra == \"cuda12-pip\"",
+            "nvidia-cuda-cupti-cu12>=12.1.105; extra == \"cuda12\"",
+            "nvidia-cuda-cupti-cu12>=12.1.105; extra == \"cuda12-pip\"",
+            "nvidia-cuda-nvcc-cu12>=12.1.105; extra == \"cuda12\"",
+            "nvidia-cuda-nvcc-cu12>=12.1.105; extra == \"cuda12-pip\"",
+            "nvidia-cuda-runtime-cu12>=12.1.105; extra == \"cuda12\"",
+            "nvidia-cuda-runtime-cu12>=12.1.105; extra == \"cuda12-pip\"",
+            "nvidia-cudnn-cu12<9.0,>=8.9.2.26; extra == \"cuda12\"",
+            "nvidia-cudnn-cu12<9.0,>=8.9.2.26; extra == \"cuda12-pip\"",
+            "nvidia-cufft-cu12>=11.0.2.54; extra == \"cuda12\"",
+            "nvidia-cufft-cu12>=11.0.2.54; extra == \"cuda12-pip\"",
+            "nvidia-cusolver-cu12>=11.4.5.107; extra == \"cuda12\"",
+            "nvidia-cusolver-cu12>=11.4.5.107; extra == \"cuda12-pip\"",
+            "nvidia-cusparse-cu12>=12.1.0.106; extra == \"cuda12\"",
+            "nvidia-cusparse-cu12>=12.1.0.106; extra == \"cuda12-pip\"",
+            "nvidia-nccl-cu12>=2.18.1; extra == \"cuda12\"",
+            "nvidia-nccl-cu12>=2.18.1; extra == \"cuda12-pip\"",
+            "nvidia-nvjitlink-cu12>=12.1.105; extra == \"cuda12\"",
+            "nvidia-nvjitlink-cu12>=12.1.105; extra == \"cuda12-pip\"",
             "opt-einsum",
             "protobuf<4,>=3.13; extra == \"australis\"",
             "requests; extra == \"tpu\"",
@@ -441,76 +438,50 @@
             "scipy>=1.9"
           ],
           "requires_python": ">=3.9",
-          "version": "0.4.25"
+          "version": "0.4.26"
         },
         {
           "artifacts": [
             {
               "algorithm": "sha256",
-              "hash": "dcfb71a7f559c13734584769ca30373bc4b73d0fe105790462370e49f35dcbe4",
-              "url": "https://files.pythonhosted.org/packages/b5/8f/02ec1b5a5165193e358b25c68a7922f670f9cc167c9788f686ce3cfd22fc/jaxlib-0.4.25-cp312-cp312-manylinux2014_x86_64.whl"
+              "hash": "f4ad7bda341596c6acd6212019feaa8c96ebd0a145c57d9c2c205c2605477332",
+              "url": "https://storage.googleapis.com/jax-releases/cuda12/jaxlib-0.4.26+cuda12.cudnn89-cp312-cp312-manylinux2014_x86_64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "0ce2a25263e7504d575e8ba5ba4f53aef6fe274679785bcf87ab06b0aaec0b90",
-              "url": "https://files.pythonhosted.org/packages/08/cb/3db59e7de925ac06d18b836d671fd7eed0e7a1d0a3207422144a14017c1b/jaxlib-0.4.25-cp311-cp311-manylinux2014_aarch64.whl"
+              "hash": "d7deed45116e708a4d741b895a302810685e51e97fcbd7eb6980c3e2fbae7a45",
+              "url": "https://storage.googleapis.com/jax-releases/cuda12/jaxlib-0.4.26+cuda12.cudnn89-cp311-cp311-manylinux2014_aarch64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "a0dd09cbb62583941872b6a198894e87a1b64d8e4dd6b53946dbb41d642b8f5f",
-              "url": "https://files.pythonhosted.org/packages/17/ae/399e885e4763118fd38e16f1a3354630dd518b71813e3350189ddc1b6179/jaxlib-0.4.25-cp311-cp311-manylinux2014_x86_64.whl"
+              "hash": "f1aaa8a1020411c74187509fca25230a81c2603a2fe708d2d38cb791ad51d60f",
+              "url": "https://storage.googleapis.com/jax-releases/cuda12/jaxlib-0.4.26+cuda12.cudnn89-cp311-cp311-manylinux2014_x86_64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "425d6f3fa57ea1d1674ae84b5a3d3588ba0937f3c47fd4f166eb84c4240887b8",
-              "url": "https://files.pythonhosted.org/packages/1b/20/a1ac8081c4e1edee1681cbafc39bb0ae611367cb7ea351b83679b1d0d84f/jaxlib-0.4.25-cp312-cp312-macosx_10_14_x86_64.whl"
-            },
-            {
-              "algorithm": "sha256",
-              "hash": "37da780cb545ca210bfa0402b5081452ad830bb06fe9e970fd16ad14d2fdc6a6",
-              "url": "https://files.pythonhosted.org/packages/78/24/dcaea0b9035a6d7191a9e9614f84fbaa0e26759233c1973ffe47342549e4/jaxlib-0.4.25-cp311-cp311-macosx_10_14_x86_64.whl"
-            },
-            {
-              "algorithm": "sha256",
-              "hash": "0df7e2193b216e195dfc7a8aa14527eb52614ec3ba4c59a199af2f17195ae1c1",
-              "url": "https://files.pythonhosted.org/packages/7d/61/6211ea56732abea539ad1178dfa15d3557b4ae63a1825cc30dbc5a2a570f/jaxlib-0.4.25-cp311-cp311-macosx_11_0_arm64.whl"
-            },
-            {
-              "algorithm": "sha256",
-              "hash": "c4e3bc32aea275e025e762612216954626478c9cf5c44131e248cdd17e361efd",
-              "url": "https://files.pythonhosted.org/packages/ca/ec/ee0be7c9b2d38fb4ca31312d004ac83290341baf66a321d9941baff9a119/jaxlib-0.4.25-cp312-cp312-manylinux2014_aarch64.whl"
-            },
-            {
-              "algorithm": "sha256",
-              "hash": "0e97542bbd89f4316d2feb599119d8a43440ca151b7a165eff0fc127cf4512e7",
-              "url": "https://files.pythonhosted.org/packages/e3/3d/b825e3d84d292044309730db59715e4e87926c579c04fb6e3972fd32df57/jaxlib-0.4.25-cp312-cp312-macosx_11_0_arm64.whl"
+              "hash": "fd36985d2352447eff7cc4c5a8b9bf15ad8a4dd1090d5651a5705adbf0a53b51",
+              "url": "https://storage.googleapis.com/jax-releases/cuda12/jaxlib-0.4.26+cuda12.cudnn89-cp312-cp312-manylinux2014_aarch64.whl"
             }
           ],
           "project_name": "jaxlib",
           "requires_dists": [
             "ml-dtypes>=0.2.0",
             "numpy>=1.22",
-            "nvidia-cublas-cu11>=11.11; extra == \"cuda11-pip\"",
-            "nvidia-cublas-cu12; extra == \"cuda12-pip\"",
-            "nvidia-cuda-cupti-cu11>=11.8; extra == \"cuda11-pip\"",
-            "nvidia-cuda-cupti-cu12; extra == \"cuda12-pip\"",
-            "nvidia-cuda-nvcc-cu11>=11.8; extra == \"cuda11-pip\"",
-            "nvidia-cuda-nvcc-cu12; extra == \"cuda12-pip\"",
-            "nvidia-cuda-runtime-cu11>=11.8; extra == \"cuda11-pip\"",
-            "nvidia-cuda-runtime-cu12; extra == \"cuda12-pip\"",
-            "nvidia-cudnn-cu11>=8.8; extra == \"cuda11-pip\"",
-            "nvidia-cudnn-cu12>=8.9; extra == \"cuda12-pip\"",
-            "nvidia-cufft-cu11>=10.9; extra == \"cuda11-pip\"",
-            "nvidia-cufft-cu12; extra == \"cuda12-pip\"",
-            "nvidia-cusolver-cu11>=11.4; extra == \"cuda11-pip\"",
-            "nvidia-cusolver-cu12; extra == \"cuda12-pip\"",
-            "nvidia-cusparse-cu11>=11.7; extra == \"cuda11-pip\"",
-            "nvidia-cusparse-cu12; extra == \"cuda12-pip\"",
+            "nvidia-cublas-cu12>=12.1.3.1; extra == \"cuda12-pip\"",
+            "nvidia-cuda-cupti-cu12>=12.1.105; extra == \"cuda12-pip\"",
+            "nvidia-cuda-nvcc-cu12>=12.1.105; extra == \"cuda12-pip\"",
+            "nvidia-cuda-runtime-cu12>=12.1.105; extra == \"cuda12-pip\"",
+            "nvidia-cudnn-cu12<9.0,>=8.9.2.26; extra == \"cuda12-pip\"",
+            "nvidia-cufft-cu12>=11.0.2.54; extra == \"cuda12-pip\"",
+            "nvidia-cusolver-cu12>=11.4.5.107; extra == \"cuda12-pip\"",
+            "nvidia-cusparse-cu12>=12.1.0.106; extra == \"cuda12-pip\"",
+            "nvidia-nccl-cu12>=2.18.1; extra == \"cuda12-pip\"",
+            "nvidia-nvjitlink-cu12>=12.1.105; extra == \"cuda12-pip\"",
             "scipy>=1.11.1; python_version >= \"3.12\"",
             "scipy>=1.9"
           ],
           "requires_python": ">=3.9",
-          "version": "0.4.25"
+          "version": "0.4.26+cuda12.cudnn89"
         },
         {
           "artifacts": [
@@ -599,38 +570,38 @@
           "artifacts": [
             {
               "algorithm": "sha256",
-              "hash": "e8505946df1665db01332d885c2020b4cb9e84a8b1241eb4ba69d59591f65855",
-              "url": "https://files.pythonhosted.org/packages/e5/f1/93219c44bae4017e6e43391fa4433592de08e05def9d885227d3596f21a5/ml_dtypes-0.3.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+              "hash": "eaa32979ebfde3a0d7c947cafbf79edc1ec77ac05ad0780ee86c1d8df70f2259",
+              "url": "https://files.pythonhosted.org/packages/8c/ef/5635b60d444db9c949b32d4e1a0a30b3ac237afbd71cce8bd1ccfb145723/ml_dtypes-0.4.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "533059bc5f1764fac071ef54598db358c167c51a718f68f5bb55e3dee79d2967",
-              "url": "https://files.pythonhosted.org/packages/39/7d/8d85fcba868758b3a546e6914e727abd8f29ea6918079f816975c9eecd63/ml_dtypes-0.3.2.tar.gz"
+              "hash": "c83e4d443962d891d51669ff241d5aaad10a8d3d37a81c5532a45419885d591c",
+              "url": "https://files.pythonhosted.org/packages/17/9b/6c655eae05ba3edb30cb03e116dfbe722775b26234b16ed0a14007c871ed/ml_dtypes-0.4.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "3a17ef2322e60858d93584e9c52a5be7dd6236b056b7fa1ec57f1bb6ba043e33",
-              "url": "https://files.pythonhosted.org/packages/6a/05/ec30199c791cf0d788a26f56d8efb8ee4133ede79a9680fd8cc05e706404/ml_dtypes-0.3.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl"
+              "hash": "ee9f91d4c4f9959a7e1051c141dc565f39e54435618152219769e24f5e9a4d06",
+              "url": "https://files.pythonhosted.org/packages/30/9d/890e8c9cb556cec121f784fd84089e1e52939ba6eabf5dc62f6435db28d6/ml_dtypes-0.4.0-cp312-cp312-macosx_10_9_universal2.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "763697ab8a88d47443997a7cdf3aac7340049aed45f7521f6b0ec8a0594821fe",
-              "url": "https://files.pythonhosted.org/packages/6e/a4/6aabb78f1569550fd77c74d2c1d008b502c8ce72776bd88b14ea6c182c9e/ml_dtypes-0.3.2-cp311-cp311-macosx_10_9_universal2.whl"
+              "hash": "ad6849a2db386b38e4d54fe13eb3293464561780531a918f8ef4c8169170dd49",
+              "url": "https://files.pythonhosted.org/packages/37/d5/3f3085b3a155e1b84c7fc680f05538d31cf01b835aa19cb17edd4994693f/ml_dtypes-0.4.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "2c34f2ba9660b21fe1034b608308a01be82bbef2a92fb8199f24dc6bad0d5226",
-              "url": "https://files.pythonhosted.org/packages/77/a0/d4ee9e3aca5b9101c590b58555820618e8201c2ccb7004eabb417ec046ac/ml_dtypes-0.3.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+              "hash": "bdf689be7351cc3c95110c910c1b864002f113e682e44508910c849e144f3df1",
+              "url": "https://files.pythonhosted.org/packages/42/6b/b2fa3e2386c2b7dde43f12b83c67f6e583039141dfbb58e5c8fd365a5a7d/ml_dtypes-0.4.0-cp311-cp311-macosx_10_9_universal2.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "93b78f53431c93953f7850bb1b925a17f0ab5d97527e38a7e865b5b4bc5cfc18",
-              "url": "https://files.pythonhosted.org/packages/ad/2d/57a8aa1ba7472a93a675bfba3f0c90d9396d01d040617a5345ce87884330/ml_dtypes-0.3.2-cp312-cp312-macosx_10_9_universal2.whl"
+              "hash": "e1e2f4237b459a63c97c2c9f449baa637d7e4c20addff6a9bac486f22432f3b6",
+              "url": "https://files.pythonhosted.org/packages/84/17/a936d3dfad84d028ba8539a93167274b7dcd7985e0d9df487e94a62f9428/ml_dtypes-0.4.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "b89b194e9501a92d289c1ffd411380baf5daafb9818109a4f49b0a1b6dce4462",
-              "url": "https://files.pythonhosted.org/packages/d1/ed/211bf2e1c66e4ec9b712c3be848a876185c7f0d5e94bf647b60e64ef32eb/ml_dtypes-0.3.2-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl"
+              "hash": "eaf197e72f4f7176a19fe3cb8b61846b38c6757607e7bf9cd4b1d84cd3e74deb",
+              "url": "https://files.pythonhosted.org/packages/dd/50/17ab8a66d66bdf55ff6dea6fe2df424061cee65c6d772abc871bb563f91b/ml_dtypes-0.4.0.tar.gz"
             }
           ],
           "project_name": "ml-dtypes",
@@ -646,7 +617,7 @@
             "pytest; extra == \"dev\""
           ],
           "requires_python": ">=3.9",
-          "version": "0.3.2"
+          "version": "0.4.0"
         },
         {
           "artifacts": [
@@ -738,6 +709,158 @@
           "requires_dists": [],
           "requires_python": ">=3.9",
           "version": "1.26.4"
+        },
+        {
+          "artifacts": [
+            {
+              "algorithm": "sha256",
+              "hash": "2fc8da60df463fdefa81e323eef2e36489e1c94335b5358bcb38360adf75ac9b",
+              "url": "https://files.pythonhosted.org/packages/ae/71/1c91302526c45ab494c23f61c7a84aa568b8c1f9d196efa5993957faf906/nvidia_cublas_cu12-12.4.5.8-py3-none-manylinux2014_x86_64.whl"
+            }
+          ],
+          "project_name": "nvidia-cublas-cu12",
+          "requires_dists": [],
+          "requires_python": ">=3",
+          "version": "12.4.5.8"
+        },
+        {
+          "artifacts": [
+            {
+              "algorithm": "sha256",
+              "hash": "9dec60f5ac126f7bb551c055072b69d85392b13311fcc1bcda2202d172df30fb",
+              "url": "https://files.pythonhosted.org/packages/67/42/f4f60238e8194a3106d06a058d494b18e006c10bb2b915655bd9f6ea4cb1/nvidia_cuda_cupti_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl"
+            }
+          ],
+          "project_name": "nvidia-cuda-cupti-cu12",
+          "requires_dists": [],
+          "requires_python": ">=3",
+          "version": "12.4.127"
+        },
+        {
+          "artifacts": [
+            {
+              "algorithm": "sha256",
+              "hash": "e4c9a35435c3b0e36c6397c5696334c9ea6650e524736cbd1c5d345ea099bb04",
+              "url": "https://files.pythonhosted.org/packages/54/5c/c2f2592f3a5a041d546501cdcfab0f19ccbd31714de238f381a6e302a783/nvidia_cuda_nvcc_cu12-12.4.131-py3-none-manylinux2014_x86_64.whl"
+            }
+          ],
+          "project_name": "nvidia-cuda-nvcc-cu12",
+          "requires_dists": [],
+          "requires_python": ">=3",
+          "version": "12.4.131"
+        },
+        {
+          "artifacts": [
+            {
+              "algorithm": "sha256",
+              "hash": "a178759ebb095827bd30ef56598ec182b85547f1508941a3d560eb7ea1fbf338",
+              "url": "https://files.pythonhosted.org/packages/2c/14/91ae57cd4db3f9ef7aa99f4019cfa8d54cb4caa7e00975df6467e9725a9f/nvidia_cuda_nvrtc_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl"
+            }
+          ],
+          "project_name": "nvidia-cuda-nvrtc-cu12",
+          "requires_dists": [],
+          "requires_python": ">=3",
+          "version": "12.4.127"
+        },
+        {
+          "artifacts": [
+            {
+              "algorithm": "sha256",
+              "hash": "64403288fa2136ee8e467cdc9c9427e0434110899d07c779f25b5c068934faa5",
+              "url": "https://files.pythonhosted.org/packages/ea/27/1795d86fe88ef397885f2e580ac37628ed058a92ed2c39dc8eac3adf0619/nvidia_cuda_runtime_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl"
+            }
+          ],
+          "project_name": "nvidia-cuda-runtime-cu12",
+          "requires_dists": [],
+          "requires_python": ">=3",
+          "version": "12.4.127"
+        },
+        {
+          "artifacts": [
+            {
+              "algorithm": "sha256",
+              "hash": "adf4f59ed7a1341103822ed8df6e144f4d47ea8b10d9bf0ea0047ba738fd7b02",
+              "url": "https://files.pythonhosted.org/packages/79/fb/8071b1c82db9b38dccbd11dfaa16aaa4b239d2deff5af711d8b01467554f/nvidia_cudnn_cu12-8.9.7.29-py3-none-manylinux1_x86_64.whl"
+            }
+          ],
+          "project_name": "nvidia-cudnn-cu12",
+          "requires_dists": [
+            "nvidia-cublas-cu12",
+            "nvidia-cuda-nvrtc-cu12"
+          ],
+          "requires_python": ">=3",
+          "version": "8.9.7.29"
+        },
+        {
+          "artifacts": [
+            {
+              "algorithm": "sha256",
+              "hash": "f083fc24912aa410be21fa16d157fed2055dab1cc4b6934a0e03cba69eb242b9",
+              "url": "https://files.pythonhosted.org/packages/27/94/3266821f65b92b3138631e9c8e7fe1fb513804ac934485a8d05776e1dd43/nvidia_cufft_cu12-11.2.1.3-py3-none-manylinux2014_x86_64.whl"
+            }
+          ],
+          "project_name": "nvidia-cufft-cu12",
+          "requires_dists": [],
+          "requires_python": ">=3",
+          "version": "11.2.1.3"
+        },
+        {
+          "artifacts": [
+            {
+              "algorithm": "sha256",
+              "hash": "19e33fa442bcfd085b3086c4ebf7e8debc07cfe01e11513cc6d332fd918ac260",
+              "url": "https://files.pythonhosted.org/packages/3a/e1/5b9089a4b2a4790dfdea8b3a006052cfecff58139d5a4e34cb1a51df8d6f/nvidia_cusolver_cu12-11.6.1.9-py3-none-manylinux2014_x86_64.whl"
+            }
+          ],
+          "project_name": "nvidia-cusolver-cu12",
+          "requires_dists": [
+            "nvidia-cublas-cu12",
+            "nvidia-cusparse-cu12",
+            "nvidia-nvjitlink-cu12"
+          ],
+          "requires_python": ">=3",
+          "version": "11.6.1.9"
+        },
+        {
+          "artifacts": [
+            {
+              "algorithm": "sha256",
+              "hash": "ea4f11a2904e2a8dc4b1833cc1b5181cde564edd0d5cd33e3c168eff2d1863f1",
+              "url": "https://files.pythonhosted.org/packages/db/f7/97a9ea26ed4bbbfc2d470994b8b4f338ef663be97b8f677519ac195e113d/nvidia_cusparse_cu12-12.3.1.170-py3-none-manylinux2014_x86_64.whl"
+            }
+          ],
+          "project_name": "nvidia-cusparse-cu12",
+          "requires_dists": [
+            "nvidia-nvjitlink-cu12"
+          ],
+          "requires_python": ">=3",
+          "version": "12.3.1.170"
+        },
+        {
+          "artifacts": [
+            {
+              "algorithm": "sha256",
+              "hash": "8579076d30a8c24988834445f8d633c697d42397e92ffc3f63fa26766d25e0a0",
+              "url": "https://files.pythonhosted.org/packages/df/99/12cd266d6233f47d00daf3a72739872bdc10267d0383508b0b9c84a18bb6/nvidia_nccl_cu12-2.21.5-py3-none-manylinux2014_x86_64.whl"
+            }
+          ],
+          "project_name": "nvidia-nccl-cu12",
+          "requires_dists": [],
+          "requires_python": ">=3",
+          "version": "2.21.5"
+        },
+        {
+          "artifacts": [
+            {
+              "algorithm": "sha256",
+              "hash": "06b3b9b25bf3f8af351d664978ca26a16d2c5127dbd53c0497e28d1fb9611d57",
+              "url": "https://files.pythonhosted.org/packages/ff/ff/847841bacfbefc97a00036e0fce5a0f086b640756dc38caea5e1bb002655/nvidia_nvjitlink_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl"
+            }
+          ],
+          "project_name": "nvidia-nvjitlink-cu12",
+          "requires_dists": [],
+          "requires_python": ">=3",
+          "version": "12.4.127"
         },
         {
           "artifacts": [
@@ -1209,79 +1332,81 @@
           "artifacts": [
             {
               "algorithm": "sha256",
-              "hash": "95e5c750d55cf518c398a8240571b0e0782c2d5a703250872f36eaf737751338",
-              "url": "https://files.pythonhosted.org/packages/7e/7f/504b7b3834d8c9229831c6c58a44943e29a34004eeb34c7ff150add4e001/scipy-1.12.0-cp312-cp312-musllinux_1_1_x86_64.whl"
+              "hash": "109d391d720fcebf2fbe008621952b08e52907cf4c8c7efc7376822151820820",
+              "url": "https://files.pythonhosted.org/packages/bd/1a/62412a225a73b204066b84792bcacbf743baae37d4982a25139212d0656e/scipy-1.13.0-cp312-cp312-musllinux_1_1_x86_64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "e7e76cc48638228212c747ada851ef355c2bb5e7f939e10952bc504c11f4e372",
-              "url": "https://files.pythonhosted.org/packages/0d/4a/b2b2cae0c5dfd46361245a67102886ed7188805bdf7044e36fe838bbcf26/scipy-1.12.0-cp312-cp312-macosx_10_9_x86_64.whl"
+              "hash": "5e4a756355522eb60fcd61f8372ac2549073c8788f6114449b37e9e8104f15a5",
+              "url": "https://files.pythonhosted.org/packages/51/b6/188c8974d747b2998d672040c5b62a635a72240c515dc4577a28e1dedc80/scipy-1.13.0-cp311-cp311-macosx_12_0_arm64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "a7ebda398f86e56178c2fa94cad15bf457a218a54a35c2a7b4490b9f9cb2676c",
-              "url": "https://files.pythonhosted.org/packages/11/7d/850bfe9462fff393130519eb54f97d43ad9c280ec4297b4cb98b7c2e96cd/scipy-1.12.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+              "hash": "4dca18c3ffee287ddd3bc8f1dabaf45f5305c5afc9f8ab9cbfab855e70b2df5c",
+              "url": "https://files.pythonhosted.org/packages/6a/31/0777a66bb99f639fa0f0d1eeedcdc55df39e79f5357ad35917889c55f416/scipy-1.13.0-cp311-cp311-musllinux_1_1_x86_64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "5adfad5dbf0163397beb4aca679187d24aec085343755fcdbdeb32b3679f254c",
-              "url": "https://files.pythonhosted.org/packages/21/d4/e6c57acc61e59cd46acca27af1f400094d5dee218e372cc604b8162b97cb/scipy-1.12.0-cp311-cp311-macosx_12_0_arm64.whl"
+              "hash": "1e7626dfd91cdea5714f343ce1176b6c4745155d234f1033584154f60ef1ff42",
+              "url": "https://files.pythonhosted.org/packages/87/8c/97e545034c94d0bbbc3af3202551c3d6020e5f8d2ee37ebcabd9a2048174/scipy-1.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "4bf5abab8a36d20193c698b0f1fc282c1d083c94723902c447e5d2f1780936a3",
-              "url": "https://files.pythonhosted.org/packages/30/85/cdbf2c3c460fe5aae812917866392068a88d02f07de0fe31ce738734c477/scipy-1.12.0.tar.gz"
+              "hash": "b2a3ff461ec4756b7e8e42e1c681077349a038f0686132d623fa404c0bee2551",
+              "url": "https://files.pythonhosted.org/packages/a1/72/8d2b7815d754e52b31ebcacf93111581f6948d96910a1a665b8cefc5cfe1/scipy-1.13.0-cp312-cp312-macosx_12_0_arm64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "8bee4993817e204d761dba10dbab0774ba5a8612e57e81319ea04d84945375ba",
-              "url": "https://files.pythonhosted.org/packages/64/e7/4dbb779d09d1cb757ddbe42cae7c4fe8270497566bb902138d637b04d88c/scipy-1.12.0-cp311-cp311-musllinux_1_1_x86_64.whl"
+              "hash": "6bf9fe63e7a4bf01d3645b13ff2aa6dea023d38993f42aaac81a18b1bda7a82a",
+              "url": "https://files.pythonhosted.org/packages/a5/56/73d123ede2d54395b0de721a439e1bafd345f522694e5faa917fda39c6bd/scipy-1.13.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "f7ce148dffcd64ade37b2df9315541f9adad6efcaa86866ee7dd5db0c8f041c3",
-              "url": "https://files.pythonhosted.org/packages/71/ba/744bbdd65eb3fce1412dd4633fc425ad39e6b4068b5b158aee1cd3afeb54/scipy-1.12.0-cp312-cp312-macosx_12_0_arm64.whl"
+              "hash": "0fbcf8abaf5aa2dc8d6400566c1a727aed338b5fe880cde64907596a89d576fa",
+              "url": "https://files.pythonhosted.org/packages/be/e3/236639c51636ec7e678f2aa608fe89acb9d02ef64e1fe1d8eb40373bc62b/scipy-1.13.0-cp311-cp311-macosx_10_9_x86_64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "408c68423f9de16cb9e602528be4ce0d6312b05001f3de61fe9ec8b1263cad08",
-              "url": "https://files.pythonhosted.org/packages/c3/32/7915195ca4643508fe9730691eaed57b879646279572b10b02bdadf165c5/scipy-1.12.0-cp311-cp311-macosx_10_9_x86_64.whl"
+              "hash": "b5acd8e1dbd8dbe38d0004b1497019b2dbbc3d70691e65d69615f8a7292865d7",
+              "url": "https://files.pythonhosted.org/packages/c9/d6/14174fdbc0fcca5d026e0e3686084a5cf9b1b0836504c73999fb8cecbc71/scipy-1.13.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "8b8066bce124ee5531d12a74b617d9ac0ea59245246410e19bca549656d9a40a",
-              "url": "https://files.pythonhosted.org/packages/d4/b8/7169935f9a2ea9e274ad8c21d6133d492079e6ebc3fc69a915c2375616b0/scipy-1.12.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+              "hash": "9ff7dad5d24a8045d836671e082a490848e8639cabb3dbdacb29f943a678683d",
+              "url": "https://files.pythonhosted.org/packages/e8/fb/e5955e2ddbdf2baee461eb53ec8d0adedd20a6dfc5510ef8d5e7e44ba461/scipy-1.13.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
             },
             {
               "algorithm": "sha256",
-              "hash": "9c39f92041f490422924dfdb782527a4abddf4707616e07b021de33467f917bc",
-              "url": "https://files.pythonhosted.org/packages/db/fd/81feac476e1ae495b51b8c3636aee1f50a1c5ca2a3557f5b0043d4e2fb02/scipy-1.12.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl"
+              "hash": "58569af537ea29d3f78e5abd18398459f195546bb3be23d16677fb26616cc11e",
+              "url": "https://files.pythonhosted.org/packages/fb/a3/328965862f41ba67d27ddd26205962007ec87d99eec6d364a29bf00ac093/scipy-1.13.0.tar.gz"
             },
             {
               "algorithm": "sha256",
-              "hash": "c3003652496f6e7c387b1cf63f4bb720951cfa18907e998ea551e6de51a04467",
-              "url": "https://files.pythonhosted.org/packages/e3/c5/d40abc1a857c1c6519e1a4e096d6aee86861eddac019fb736b6af8a58d25/scipy-1.12.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl"
+              "hash": "d0de696f589681c2802f9090fff730c218f7c51ff49bf252b6a97ec4a5d19e8b",
+              "url": "https://files.pythonhosted.org/packages/fc/4e/67541c3d681bb6fb96acbc3581fb155c881a0d993d0aa3e8708493b70e79/scipy-1.13.0-cp312-cp312-macosx_10_9_x86_64.whl"
             }
           ],
           "project_name": "scipy",
           "requires_dists": [
+            "array-api-strict; extra == \"test\"",
             "asv; extra == \"test\"",
-            "click; extra == \"dev\"",
             "cython-lint>=0.12.2; extra == \"dev\"",
             "doit>=0.36.0; extra == \"dev\"",
             "gmpy2; extra == \"test\"",
-            "hypothesis; extra == \"test\"",
+            "hypothesis>=6.30; extra == \"test\"",
+            "jupyterlite-pyodide-kernel; extra == \"doc\"",
+            "jupyterlite-sphinx>=0.12.0; extra == \"doc\"",
             "jupytext; extra == \"doc\"",
-            "matplotlib>2; extra == \"doc\"",
+            "matplotlib>=3.5; extra == \"doc\"",
             "mpmath; extra == \"test\"",
             "mypy; extra == \"dev\"",
             "myst-nb; extra == \"doc\"",
-            "numpy<1.29.0,>=1.22.4",
+            "numpy<2.3,>=1.22.4",
             "numpydoc; extra == \"doc\"",
             "pooch; extra == \"doc\"",
             "pooch; extra == \"test\"",
             "pycodestyle; extra == \"dev\"",
-            "pydata-sphinx-theme==0.9.0; extra == \"doc\"",
+            "pydata-sphinx-theme>=0.15.2; extra == \"doc\"",
             "pydevtool; extra == \"dev\"",
             "pytest-cov; extra == \"test\"",
             "pytest-timeout; extra == \"test\"",
@@ -1290,14 +1415,14 @@
             "rich-click; extra == \"dev\"",
             "ruff; extra == \"dev\"",
             "scikit-umfpack; extra == \"test\"",
-            "sphinx!=4.1.0; extra == \"doc\"",
-            "sphinx-design>=0.2.0; extra == \"doc\"",
+            "sphinx-design>=0.4.0; extra == \"doc\"",
+            "sphinx>=5.0.0; extra == \"doc\"",
             "threadpoolctl; extra == \"test\"",
             "types-psutil; extra == \"dev\"",
             "typing_extensions; extra == \"dev\""
           ],
           "requires_python": ">=3.9",
-          "version": "1.12.0"
+          "version": "1.13.0"
         },
         {
           "artifacts": [
@@ -1371,7 +1496,15 @@
   "requirements": [
     "black<25.0.0,>=24.2.0",
     "jax[cuda12-pip]<0.5.0,>=0.4.25",
-    "jaxlib<0.5.0,>=0.4.25",
+    "jaxlib[cuda12-pip]<0.5.0,>=0.4.25",
+    "nvidia-cublas-cu12[cuda12-pip]<13.0.0,>=12.4.5.8",
+    "nvidia-cuda-cupti-cu12[cuda12-pip]<13.0.0,>=12.4.127",
+    "nvidia-cuda-nvcc-cu12[cuda12-pip]<13.0.0,>=12.4.131",
+    "nvidia-cuda-runtime-cu12[cuda12-pip]<13.0.0,>=12.4.127",
+    "nvidia-cudnn-cu12[cuda12-pip]<9.0.0,>=8.9.7.29",
+    "nvidia-cufft-cu12[cuda12-pip]<12.0.0,>=11.2.1.3",
+    "nvidia-cusolver-cu12[cuda12-pip]<12.0.0,>=11.6.1.9",
+    "nvidia-nccl-cu12[cuda12-pip]>=2.18.1",
     "pytest-unordered<0.6.0,>=0.5.2",
     "pytest<9.0.0,>=8.0.2",
     "regex<2024.0.0,>=2023.12.25",

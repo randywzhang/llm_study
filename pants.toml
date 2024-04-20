@@ -23,7 +23,13 @@ default_resolve = "default"
 default = "lockfiles/python.lock"
 
 [python-repos]
-indexes = ["https://pypi.org/simple/"]
+indexes = [
+    "https://pypi.org/simple/",
+    "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.1-1_all.deb",
+]
+find_links = [
+    "https://storage.googleapis.com/jax-releases/jax_cuda_releases.html",
+]
 
 [repl]
 shell = "ipython"

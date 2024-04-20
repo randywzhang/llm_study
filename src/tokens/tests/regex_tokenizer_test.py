@@ -2,7 +2,7 @@ import pytest
 
 from util import load_text_from_file
 
-from ...tokens import gpt4
+from .. import gpt4
 from ..regex_tokenizer import RegexTokenizer
 
 

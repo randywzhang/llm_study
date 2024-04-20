@@ -1,4 +1,8 @@
-python_sources()
+python_sources(
+    dependencies=[
+        ":training_data",
+    ]
+)
 
 resources(
     name="training_data",

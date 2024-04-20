@@ -1,10 +1,13 @@
+import pickle
 from typing import Optional
 
 import regex
 from regex import Pattern
 
-from .bpe import BASE_VOCAB, BASE_VOCAB_SIZE, BasicBPETokenizer
+from .bpe import BASE_VOCAB, BASE_VOCAB_SIZE, BasicBPETokenizer, TokenizerEncodingError
 from .gpt4 import GPT_4_SPLIT_PATTERN
+
+SAVE_FILE = "regex_tokenizer.pkl"
 
 
 class RegexTokenizer(BasicBPETokenizer):
@@ -29,10 +32,18 @@ class RegexTokenizer(BasicBPETokenizer):
             self.base_tokenizer(split) for split in regex.findall(self.pattern, text)
         ]
 
-        for _ in range(vocab_size - self.base_vocab_size):
+        for pair, idx in self.merges.items():
+            regex_split_tokens = self._merge_rt(regex_split_tokens, idx, pair)
+
+        num_additional_vocab = vocab_size - self.next_token_id
+
+        for _ in range(num_additional_vocab):
             regex_split_tokens = self._create_new_token(regex_split_tokens)
 
-    def encode(self, text: str) -> list[int]:
+        # refresh vocab
+        self._vocab = self.vocab
+
+    def encode(self, text: str, validate: bool = False) -> list[int]:
         regex_split_tokens: list[list[int]] = [
             self.base_tokenizer(split) for split in regex.findall(self.pattern, text)
         ]
@@ -41,6 +52,10 @@ class RegexTokenizer(BasicBPETokenizer):
 
         for split in regex_split_tokens:
             tokens.extend(self._encode_chunk(split))
+
+        if validate:
+            if self.decode(tokens) != text:
+                raise TokenizerEncodingError
 
         return tokens
 
@@ -133,3 +148,27 @@ class RegexTokenizer(BasicBPETokenizer):
     @base_tokenizer.setter
     def base_tokenizer(self, tokenizer: callable) -> None:
         self._base_tokenizer = tokenizer
+
+    def save(self, fname: str = SAVE_FILE) -> None:
+        from pathlib import Path
+
+        state = self.__dict__.copy()
+        state["_base_tokenizer"] = None
+        with Path.open(fname, "wb") as f:
+            f.write(pickle.dumps(state))
+
+    def load(self, fname: str = SAVE_FILE) -> bool:
+        from pathlib import Path
+
+        try:
+            with Path.open(fname, "rb") as f:
+                # ruff: noqa: S301
+                state = pickle.loads(f.read())
+                state["_base_tokenizer"] = self._utf8_tokenization
+                self.__dict__ = state
+        except FileNotFoundError:
+            return False
+        except EOFError:
+            return False
+
+        return True
