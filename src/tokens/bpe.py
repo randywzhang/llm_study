@@ -142,7 +142,7 @@ class BasicBPETokenizer:
             if not vocab:
                 vocab = self._base_vocab
             for (p0, p1), idx in list(self.merges.items())[
-                len(self._vocab) - self.base_vocab_size :
+                len(vocab) - self.base_vocab_size :
             ]:
                 # slices the merge list to give only merges that haven't been
                 # added to the vocabulary - Python 3.7+ dict items is insertion ordered

@@ -1,4 +1,17 @@
+"""
+This module contains the TransformerDataLoader class and doubles
+as a script to train a tokenizer on an input file and encode the
+file. 
+
+Usage:
+
+pants run src/transformer/data_loader.py -- input_file [--vocab-size] \
+[--load-tokenizer <filename>] [--train-tokenizer] [--save-tokenizer <filename>] \
+[--encoding-save-file <filename>]
+"""
+
 import pickle
+from argparse import ArgumentParser
 from pathlib import Path
 from typing import Optional
 
@@ -16,9 +29,10 @@ def get_bespoke_tokenizer(
     raw_text: str,
     vocab_size: int = TOKENIZER_VOCAB_SIZE,
     load_from_file: bool = False,
-    save_file: str = SAVE_FILE,
+    load_file: str = SAVE_FILE,
     train_further: bool = False,
     save_tokenizer: bool = False,
+    save_file: str = SAVE_FILE,
 ) -> RegexTokenizer:
     """
     Note: If you did a split for training/test data, you must
@@ -45,7 +59,7 @@ def get_bespoke_tokenizer(
     )
 
     if load_from_file:
-        regex_tokenizer.load(save_file)
+        regex_tokenizer.load(load_file)
         regex_tokenizer.base_tokenizer = base_tokenizer
         if not train_further:
             return regex_tokenizer
@@ -53,7 +67,7 @@ def get_bespoke_tokenizer(
     regex_tokenizer.train(raw_text, vocab_size)
 
     if save_tokenizer:
-        regex_tokenizer.save()
+        regex_tokenizer.save(save_file)
 
     return regex_tokenizer
 
@@ -178,24 +192,50 @@ class TransformerDataLoader:
         return self._val_data
 
 
+parser = ArgumentParser()
+parser.add_argument("input_file")
+parser.add_argument("--vocab-size", default=500)
+parser.add_argument(
+    "--load-tokenizer",
+    type=str,
+    help="File to load tokenizer from, default tokenizer save location is regex_tokenizer.pkl",
+)
+parser.add_argument(
+    "--train-tokenizer",
+    action="store_true",
+    default=False,
+    help="If loading tokenizer, setting this flag trains the loaded tokenizer until its vocabulary reaches vocab_size",
+)
+parser.add_argument(
+    "--save-tokenizer",
+    default=SAVE_FILE,
+    type=str,
+    help="File to save tokenizer to, default is regex_tokenizer.pkl",
+)
+parser.add_argument(
+    "--encoding-save-file",
+    type=str,
+    help="File to save encoding to. Default is <input_file>_encoding.pkl",
+)
+
+
+# ruff: noqa: T201
 if __name__ == "__main__":
-    test_file_name = "tiny_shakespeare.txt"
-    data_loader = TransformerDataLoader(test_file_name)
+    args = parser.parse_args()
+
+    data_loader = TransformerDataLoader(args.input_file)
     tokenizer = get_bespoke_tokenizer(
         raw_text=data_loader.raw_text,
-        vocab_size=5000,
-        load_from_file=True,
-        train_further=False,
-        save_tokenizer=True,
+        vocab_size=args.vocab_size,
+        load_from_file=args.load_tokenizer is not None,
+        load_file=args.load_tokenizer,
+        train_further=args.train_tokenizer,
+        save_tokenizer=args.save_tokenizer is not None,
+        save_file=args.save_tokenizer,
     )
 
     print("encoding file...")
-    if not data_loader.load_encoding():
-        data_loader.generate_encoding(tokenizer)
+    data_loader.generate_encoding(tokenizer)
 
-        data_loader.save_encoding()
-
-    x, y = data_loader.get_batch()
-
-    print(f"Inputs: {x}")
-    print(f"Outputs: {y}")
+    print("saving encoding...")
+    data_loader.save_encoding(args.encoding_save_file)
