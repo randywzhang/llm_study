@@ -20,7 +20,7 @@ import jax.random as jrand
 from jax import Array
 
 from tokens.regex_tokenizer import SAVE_FILE, RegexTokenizer
-from util import load_text_from_file
+from util import get_file_path, load_text_from_file
 
 TOKENIZER_VOCAB_SIZE = 500
 
@@ -136,19 +136,27 @@ class TransformerDataLoader:
 
         self.encoding = self.tokenizer.encode(self.raw_text)
 
-    def save_encoding(self, encoding_save_file: Optional[str] = None) -> None:
+    def save_encoding(
+        self,
+        encoding_save_file: Optional[str] = None,
+        directory: str = __file__,
+    ) -> None:
         if not encoding_save_file:
             encoding_save_file = self.encoding_save_file
 
-        with Path.open(encoding_save_file, "wb") as f:
+        with Path.open(get_file_path(encoding_save_file, directory), "wb") as f:
             f.write(pickle.dumps(self.encoding))
 
-    def load_encoding(self, encoding_save_file: Optional[str] = None) -> bool:
+    def load_encoding(
+        self,
+        encoding_save_file: Optional[str] = None,
+        directory: str = __file__,
+    ) -> bool:
         if not encoding_save_file:
             encoding_save_file = self.encoding_save_file
 
         try:
-            with Path.open(encoding_save_file, "rb") as f:
+            with Path.open(get_file_path(encoding_save_file, directory), "rb") as f:
                 # ruff: noqa: S301
                 self.encoding = pickle.loads(f.read())
         except FileNotFoundError:

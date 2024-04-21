@@ -4,6 +4,8 @@ from typing import Optional
 import regex
 from regex import Pattern
 
+from util import get_file_path
+
 from .bpe import BASE_VOCAB, BASE_VOCAB_SIZE, BasicBPETokenizer, TokenizerEncodingError
 from .gpt4 import GPT_4_SPLIT_PATTERN
 
@@ -149,19 +151,20 @@ class RegexTokenizer(BasicBPETokenizer):
     def base_tokenizer(self, tokenizer: callable) -> None:
         self._base_tokenizer = tokenizer
 
-    def save(self, fname: str = SAVE_FILE) -> None:
+    def save(self, fname: str = SAVE_FILE, directory: str = __file__) -> None:
         from pathlib import Path
 
         state = self.__dict__.copy()
         state["_base_tokenizer"] = None
-        with Path.open(fname, "wb") as f:
+
+        with Path.open(get_file_path(fname, directory), "wb") as f:
             f.write(pickle.dumps(state))
 
-    def load(self, fname: str = SAVE_FILE) -> bool:
+    def load(self, fname: str = SAVE_FILE, directory: str = __file__) -> bool:
         from pathlib import Path
 
         try:
-            with Path.open(fname, "rb") as f:
+            with Path.open(get_file_path(fname, directory), "rb") as f:
                 # ruff: noqa: S301
                 state = pickle.loads(f.read())
                 state["_base_tokenizer"] = self._utf8_tokenization
