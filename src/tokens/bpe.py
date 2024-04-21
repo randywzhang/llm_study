@@ -140,7 +140,7 @@ class BasicBPETokenizer:
         if self._vocab_update_flag:
             vocab = self._vocab
             if not vocab:
-                vocab = self._base_vocab
+                vocab = self._base_vocab.copy()
             for (p0, p1), idx in list(self.merges.items())[
                 len(vocab) - self.base_vocab_size :
             ]:
@@ -157,6 +157,7 @@ class BasicBPETokenizer:
         return self._vocab
 
     @vocab.setter
-    def vocab(self, tiktoken_mergeable_ranks: dict[bytes, int]) -> None:
-        self._vocab = {v: k for k, v in tiktoken_mergeable_ranks.items()}
+    def vocab(self, vocab: dict[bytes, int]) -> None:
+        # vocab is equivalent to tiktoken's _mergeable_ranks
+        self._vocab = {v: k for k, v in vocab.items()}
         self._vocab_update_flag = False
