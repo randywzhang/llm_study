@@ -9,5 +9,6 @@ resources(
     sources=[
         "tiny_shakespeare.txt",
         "training_data.txt",
+        "*.pkl",
     ],
 )

@@ -188,16 +188,23 @@ class TransformerDataLoader:
     @property
     def train_data(self) -> Array:
         if self._train_data is None:
-            self._train_data = self.data[: int(0.9 * len(self.data))]
+            self._train_data = self.data[: int(0.9 * self.data.shape[0])]
 
         return self._train_data
 
     @property
     def val_data(self) -> Array:
         if self._val_data is None:
-            self._val_data = self.data[int(0.9 * len(self.data)) :]
+            self._val_data = self.data[int(0.9 * self.data.shape[0]) :]
 
         return self._val_data
+
+    @property
+    def vocab_size(self) -> int:
+        if self.encoding is None:
+            return 0
+
+        return len(set(self.encoding))
 
 
 parser = ArgumentParser()
