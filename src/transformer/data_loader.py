@@ -33,6 +33,7 @@ def get_bespoke_tokenizer(
     train_further: bool = False,
     save_tokenizer: bool = False,
     save_file: str = SAVE_FILE,
+    directory: str = __file__,
 ) -> RegexTokenizer:
     """
     Note: If you did a split for training/test data, you must
@@ -59,7 +60,7 @@ def get_bespoke_tokenizer(
     )
 
     if load_from_file:
-        regex_tokenizer.load(load_file)
+        regex_tokenizer.load(load_file, directory)
         regex_tokenizer.base_tokenizer = base_tokenizer
         if not train_further:
             return regex_tokenizer
@@ -67,7 +68,7 @@ def get_bespoke_tokenizer(
     regex_tokenizer.train(raw_text, vocab_size)
 
     if save_tokenizer:
-        regex_tokenizer.save(save_file)
+        regex_tokenizer.save(save_file, directory)
 
     return regex_tokenizer
 
@@ -92,7 +93,7 @@ class TransformerDataLoader:
     batch_size: int
     block_size: int
 
-    prng_key: Array
+    _prng_key: Array
 
     # ruff: noqa: PLR0913
     def __init__(
@@ -125,7 +126,7 @@ class TransformerDataLoader:
         self.batch_size = batch_size
         self.block_size = block_size
 
-        self.prng_key = jrand.PRNGKey(jrand_seed)
+        self._prng_key = jrand.PRNGKey(jrand_seed)
 
     def load_raw_text(self) -> None:
         self.raw_text = load_text_from_file(self.data_file, self.directory)
@@ -205,6 +206,11 @@ class TransformerDataLoader:
             return 0
 
         return len(set(self.encoding))
+
+    @property
+    def prng_key(self) -> Array:
+        self._prng_key, subkey = jrand.split(self._prng_key)
+        return subkey
 
 
 parser = ArgumentParser()

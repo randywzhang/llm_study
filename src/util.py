@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 
 
+# TODO: Fix all instances of directory argument, change to script_location
+# or something more accurate. directory is misleading
 def load_text_from_file(filename: str, directory: str = __file__) -> str:
     module_path = Path(os.path.realpath(directory)).parent
     file_path = module_path / filename
