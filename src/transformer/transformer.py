@@ -1,3 +1,5 @@
+from argparse import ArgumentParser
+
 import equinox
 import jax
 import jax.numpy as jnp
@@ -6,7 +8,14 @@ import optax
 from equinox import nn
 from jax import Array
 
-from .data_loader import BLOCK_SIZE, TransformerDataLoader, get_bespoke_tokenizer
+from util import get_file_path
+
+from .data_loader import (
+    BLOCK_SIZE,
+    SAVE_FILE,
+    TransformerDataLoader,
+    get_bespoke_tokenizer,
+)
 
 JRAND_SEED = 0
 
@@ -26,8 +35,8 @@ class AttentionHead(equinox.Module):
 
     def __init__(
         self,
-        n_embed: int = N_EMBED,
-        head_size: int = HEAD_SIZE,
+        n_embed: int = N_EMBED,  # query_size (and value_size and key_size)
+        head_size: int = HEAD_SIZE,  # qk_size (and vo_size)
         block_size: int = BLOCK_SIZE,  # T
         jrand_seed: int = JRAND_SEED,
     ):
@@ -93,25 +102,124 @@ class AttentionHead(equinox.Module):
         return context_mat @ v  # (T, head_size)
 
 
-# TODO: needs work, don't like the for loops
-# use vmap instead like in nn.MultiheadAttention._project
+NUM_HEADS = 4
+
+
+class NumHeadsError(Exception):
+    def __init__(self) -> None:
+        super().__init__(msg="num_heads doesn't evenly divide out_size")
+
+
 class MultiHeadAttention(equinox.Module):
+    num_heads: int
+    head_size: int
+    block_size: int  # T
+
+    key: nn.Linear
+    query: nn.Linear
+    value: nn.Linear
+
+    multi_head_tril: Array
 
     def __init__(
         self,
         num_heads: int,
-        n_embed: int = N_EMBED,
-        head_size: int = HEAD_SIZE,
+        n_embed: int = N_EMBED,  # query_size (and value_size and key_size)
+        out_size: int = HEAD_SIZE,  # num_heads * qk_size (vo_size = qk_size)
         block_size: int = BLOCK_SIZE,
         jrand_seed: int = JRAND_SEED,
     ):
-        self.heads = [
-            AttentionHead(n_embed, head_size, block_size, jrand_seed)
-            for _ in range(num_heads)
-        ]
+        head_size = out_size // num_heads
+        if out_size != head_size * num_heads:
+            raise NumHeadsError
+
+        self.num_heads = num_heads
+        self.head_size = head_size
+        self.block_size = block_size
+
+        layer_prng_key = jrand.PRNGKey(jrand_seed)
+
+        layer_prng_key, subkey = jrand.split(layer_prng_key)
+        self.key = nn.Linear(
+            in_features=n_embed,
+            out_features=head_size * num_heads,
+            use_bias=False,
+            key=subkey,
+        )
+
+        layer_prng_key, subkey = jrand.split(layer_prng_key)
+        self.query = nn.Linear(
+            in_features=n_embed,
+            out_features=head_size * num_heads,
+            use_bias=False,
+            key=subkey,
+        )
+
+        layer_prng_key, subkey = jrand.split(layer_prng_key)
+        self.value = nn.Linear(
+            in_features=n_embed,
+            out_features=head_size * num_heads,
+            use_bias=False,
+            key=subkey,
+        )
+
+        tril = jnp.tril(jnp.ones((block_size, block_size)))
+        single_head_tril = jnp.expand_dims(tril, axis=0)
+        self.multi_head_tril = jnp.tile(single_head_tril, reps=(num_heads, 1, 1))
+
+        """
+        Naive impl
+
+        # self.heads = [
+        #     AttentionHead(n_embed, head_size, block_size, jrand_seed)
+        #     for _ in range(num_heads)
+        # ]
+        """
 
     def __call__(self, x: Array) -> Array:
-        return jnp.concat([h(x) for h in self.heads], axis=-1)
+        """
+        Naive impl
+
+        # return jnp.concat([h(x) for h in self.heads], axis=-1)
+        """
+
+        # get the individual attention heads via self._project
+        query_heads = self._project(self.query, x)  # (T, num_heads, head_size)
+        key_heads = self._project(self.key, x)
+        value_heads = self._project(self.value, x)
+
+        # reshape heads for matmul
+        # combine key_heads transposes in context_mat calculation:
+        #   transpose(key_heads, (1, 0, 2)) -> (num_heads, T, head_size)
+        #   transpose(key_heads, (1, 2, 0)) -> (num_heads, head_size, T)
+        query_heads = jnp.transpose(query_heads, (1, 0, 2))  # (num_heads, T, head_size)
+        value_heads = jnp.transpose(value_heads, (1, 0, 2))
+
+        # obtain the context matrices for each attention head
+        context_mat = (
+            query_heads
+            @ jnp.transpose(key_heads, axes=(1, 2, 0))
+            * self.head_size**-0.5
+        )  # (num_heads, T, T)
+
+        # --DECODER LOGIC--
+        context_mat = jnp.where(self.multi_head_tril == 0, -jnp.inf, context_mat)
+        # --END DECODER LOGIC--
+
+        context_mat = jax.nn.softmax(context_mat, axis=-1)
+
+        output = context_mat @ value_heads  # (num_heads, T, head_size)
+        return jnp.transpose(output, axes=(1, 0, 2)).reshape(
+            self.block_size, self.num_heads * self.head_size
+        )  # transpose to (T, num_heads, head_size), reshape to (T, num_heads * head_size)
+
+    # same as equinox.nn._attention.MultiheadAttention._project
+    def _project(self, proj: nn.Linear, x: Array) -> Array:
+        seq_length, _ = x.shape  # (T, embed_size)
+        projection = jax.vmap(proj)(x)  # feeds x through each attn head, (T, out_size)
+        return projection.reshape(
+            seq_length, self.num_heads, -1
+        )  # reshapes output (T, num_heads, head_size)
 
 
 class Transformer(equinox.Module):
@@ -127,6 +235,7 @@ class Transformer(equinox.Module):
         vocab_size: int,  # C_vocab
         n_embed: int = N_EMBED,  # C_embed
         block_size: int = BLOCK_SIZE,  # T
+        num_heads: int = 1,  # equivalent to single attention head
         head_size: int = HEAD_SIZE,
         jrand_seed: int = JRAND_SEED,
     ):
@@ -146,7 +255,9 @@ class Transformer(equinox.Module):
             key=subkey,
         )
 
-        self.sa_head = AttentionHead(n_embed, head_size, block_size, jrand_seed)
+        self.sa_head = MultiHeadAttention(
+            num_heads, n_embed, head_size, block_size, jrand_seed
+        )
 
         layer_prng_key, subkey = jrand.split(layer_prng_key)
         self.lm_head = nn.Linear(
@@ -217,7 +328,7 @@ def make_step(
     batch_expected: Array,
     opt_state: optax.OptState,
     opt_update: optax.TransformUpdateFn,
-):
+) -> tuple[float, equinox.Module, optax.OptState]:
     loss, grads = compute_loss(model, batch_input, batch_expected)
     updates, opt_state = opt_update(grads, opt_state)
     model = equinox.apply_updates(model, updates)
@@ -233,7 +344,6 @@ def generate_tokens(
     prng_key = jrand.PRNGKey(seed)
     generated_tokens = []
     next_token = jnp.array([0])
-    print(next_token.shape)
     for _ in range(num_new_tokens):
         prng_key, subkey = jrand.split(prng_key)
         next_token = model.generate_token(next_token, subkey)
@@ -242,62 +352,198 @@ def generate_tokens(
     return generated_tokens
 
 
-# Train the model
-def main() -> None:
-    data_loader = TransformerDataLoader("tiny_shakespeare.txt")
-    if not data_loader.load_encoding("tiny_shakespeare_encoding.pkl"):
+# ruff: noqa: PLR0913
+def main(
+    lr: int = 3e-4,
+    num_steps: int = 50_000,
+    epoch_size: int = 10_000,
+    train: bool = False,
+    num_heads: int = NUM_HEADS,
+    data_file: str = "tiny_shakespeare.txt",
+    encoding_save_file: str = "tiny_shakespeare_encoding.pkl",
+    tokenizer_save_file: str = SAVE_FILE,
+    load_pytree: bool = False,
+    model_pytree_save_file: str = get_file_path("transformer.eqx", __file__),
+    rand_seed: int = JRAND_SEED,
+    num_new_tokens: int = NUM_NEW_TOKENS,
+) -> None:
+    """
+    Prerequisites:
+
+    Must have already trained and saved a tokenizer on the data_file.
+    See data_loader.py
+
+    Some of the model parameters will be defined by tokenizer fields,
+    such as vocab_size.
+    """
+    data_loader = TransformerDataLoader(data_file)
+    tokenizer = get_bespoke_tokenizer(
+        raw_text=data_loader.raw_text,
+        load_from_file=True,
+        load_file=tokenizer_save_file,
+    )
+
+    if not data_loader.load_encoding(encoding_save_file):
         print("Failed to load encoding")
+        data_loader.generate_encoding(tokenizer)
 
-    # tokenizer = get_bespoke_tokenizer(
-    #     raw_text=data_loader.raw_text, load_from_file=True
-    # )
+    transformer = Transformer(
+        data_loader.vocab_size, num_heads=num_heads, jrand_seed=rand_seed
+    )
 
-    # prng_key = jrand.PRNGKey(0)
-    # prng_key, subkey = jrand.split(prng_key)
-    # blm = BigramLanguageModel(data_loader.vocab_size, subkey)
+    if load_pytree:
+        transformer = equinox.tree_deserialise_leaves(
+            model_pytree_save_file, transformer
+        )
 
-    # lr = 3e-4
-    # opt = optax.adabelief(lr)
-    # opt_state = opt.init(equinox.filter(blm, equinox.is_inexact_array))
+    opt = optax.adabelief(lr)
+    opt_state = opt.init(equinox.filter(transformer, equinox.is_inexact_array))
 
-    # # Train
-    # num_steps = 1_000_000
-    # total_loss = 0
-    # total_size = 0
-    # print_every = 10_000
-    # import math
+    if train:
+        total_loss = 0
+        total_size = 0
+        import math
 
-    # for step in range(num_steps):
-    #     batch_input, batch_expected = data_loader.get_batch()
+        for step in range(num_steps):
+            batch_input, batch_expected = data_loader.get_batch()
 
-    #     loss, blm, opt_state = make_step(
-    #         blm, batch_input, batch_expected, opt_state, opt.update
-    #     )
-    #     if math.isnan(loss):
-    #         if total_size == 0:
-    #             total_size = 1
+            loss, transformer, opt_state = make_step(
+                transformer, batch_input, batch_expected, opt_state, opt.update
+            )
+            # TODO: figure out why ~25% of steps result in nan loss
+            if math.isnan(loss):
+                if total_size == 0:
+                    total_size = 1
 
-    #         if (step % print_every) == 0 or step == num_steps - 1:
-    #             print(f"Loss: {loss}, Total: {total_loss}, Size: {total_size}")
-    #             print(f"Step={step} Loss={total_loss / total_size}")
-    #             total_loss = 0
-    #             total_size = 0
-    #         continue
+                if (step % epoch_size) == 0 or step == num_steps - 1:
+                    print(f"Loss: {loss}, Total: {total_loss}, Size: {total_size}")
+                    print(f"Step={step} Loss={total_loss / total_size}")
+                    total_loss = 0
+                    total_size = 0
 
-    #     total_loss += loss
-    #     total_size += 1
-    #     if (step % print_every) == 0 or step == num_steps - 1:
-    #         print(f"Loss: {loss}, Total: {total_loss}, Size: {total_size}")
-    #         print(f"Step={step} Loss={total_loss / total_size}")
-    #         total_loss = 0
-    #         total_size = 0
+                    equinox.tree_serialise_leaves(model_pytree_save_file, transformer)
 
-    #         equinox.tree_serialise_leaves("blm.eqx", blm)
+                continue
 
-    # generated_tokens = generate_tokens(blm)
-    # print(generated_tokens)
-    # print(tokenizer.decode(generated_tokens))
+            total_loss += loss
+            total_size += 1
+            if (step % epoch_size) == 0 or step == num_steps - 1:
+                print(f"Loss: {loss}, Total: {total_loss}, Size: {total_size}")
+                print(f"Step={step} Loss={total_loss / total_size}")
+                total_loss = 0
+                total_size = 0
+
+                equinox.tree_serialise_leaves(model_pytree_save_file, transformer)
+
+        equinox.tree_serialise_leaves(model_pytree_save_file, transformer)
+
+    generated_tokens = generate_tokens(
+        model=transformer,
+        num_new_tokens=num_new_tokens,
+        seed=rand_seed,
+    )
+    print(tokenizer.decode(generated_tokens))
+
+
+# TODO: clean up args, create input file for hyperparameters
+# lr, num_heads, etc.
+parser = ArgumentParser()
+parser.add_argument(
+    "-lr",
+    "--learning-rate",
+    type=float,
+    help="Learning rate, default 3e-4",
+    default=3e-4,
+)
+parser.add_argument(
+    "-i",
+    "--num-steps",
+    type=int,
+    help="Number of training iterations, default 50_000",
+    default=50_000,
+)
+parser.add_argument(
+    "-e",
+    "--epoch-size",
+    type=int,
+    help="Number of training iterations per epoch, default 10_000. Loss averages will be printed at the end of a training epoch.",
+    default=10_000,
+)
+parser.add_argument(
+    "-t",
+    "--train",
+    action="store_true",
+    help="If set will enable the training loop",
+    default=False,
+)
+parser.add_argument(
+    "-nh",
+    "--num-heads",
+    type=int,
+    help="Number of attention heads, default 1",
+    default=NUM_HEADS,
+)
+parser.add_argument(
+    "--data-file",
+    type=str,
+    help="File to load training data from, default 'tiny_shakespeare.txt'. Must have trained a RegexTokenizer on this data, see data_loader.py",
+    default="tiny_shakespeare.txt",
+)
+parser.add_argument(
+    "--encoding-save-file",
+    type=str,
+    help="File to load encoding from. Default is 'tiny_shakespeare_encoding.pkl'",
+    default="tiny_shakespeare_encoding.pkl",
+)
+parser.add_argument(
+    "--tokenizer-save-file",
+    type=str,
+    help="File to load tokenizer from. Default is 'regex_tokenizer.pkl'",
+    default=SAVE_FILE,
+)
+parser.add_argument(
+    "-l",
+    "--load-pytree",
+    action="store_true",
+    help="If set will load a model from the model_pytree_save_file.",
+    default=False,
+)
+parser.add_argument(
+    "-m",
+    "--model-pytree-save-file",
+    type=str,
+    help="File to load pytree from. Default is 'blm.eqx'",
+    default=get_file_path("transformer.eqx", __file__),
+)
+parser.add_argument(
+    "-n",
+    "--num-new-tokens",
+    type=int,
+    help="Number of tokens to generate, default 100",
+    default=NUM_NEW_TOKENS,
+)
+parser.add_argument(
+    "-s",
+    "--rand-seed",
+    type=int,
+    help="Seed for jax.random, default 0",
+    default=JRAND_SEED,
+)
 
 
 if __name__ == "__main__":
-    main()
+    args = parser.parse_args()
+    main(
+        args.learning_rate,
+        args.num_steps,
+        args.epoch_size,
+        args.train,
+        args.num_heads,
+        args.data_file,
+        args.encoding_save_file,
+        args.tokenizer_save_file,
+        args.load_pytree,
+        args.model_pytree_save_file,
+        args.rand_seed,
+        args.num_new_tokens,
+    )

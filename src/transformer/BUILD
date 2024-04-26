@@ -1,7 +1,8 @@
 python_sources(
     dependencies=[
         ":training_data",
-    ]
+    ],
+    run_goal_use_sandbox=False,
 )
 
 resources(
