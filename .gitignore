@@ -15,3 +15,7 @@ poetry.lock
 #local 
 .envrc
 .python-version
+
+#saved models, tokenizers, etc.
+*.pkl
+*.eqx
