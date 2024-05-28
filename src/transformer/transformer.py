@@ -1,4 +1,3 @@
-import math
 import time
 from argparse import ArgumentParser
 from typing import Optional
@@ -446,6 +445,7 @@ def make_step(
 VAL_ITERS = 200  # validation loops
 
 
+# TODO: figure out a way to use jax instead of python for loop
 @equinox.filter_jit
 def eval_model(
     model: equinox.Module,
@@ -541,6 +541,7 @@ def main(
         load_from_file=True,
         load_file=tokenizer_save_file,
     )
+    data_loader.tokenizer = tokenizer
 
     if not data_loader.load_encoding(encoding_save_file):
         print("Failed to load encoding")
@@ -570,7 +571,6 @@ def main(
 
     if train:
         total_loss = 0
-        total_size = 0
 
         start_time = time.time()
         end_time = time.time()
@@ -594,43 +594,13 @@ def main(
                 loss_fn=loss_fn,
                 key=dropout_keys,
             )
-            # TODO: figure out why ~25% of steps result in nan loss
-            if math.isnan(loss):
-                if total_size == 0:
-                    total_size = 1
-
-                if (step % epoch_size) == 0 or step == num_steps - 1:
-                    print(f"Epoch: {(step + 1) // epoch_size}")
-
-                    # print(f"Loss: {loss}, Total: {total_loss}, Size: {total_size}")
-                    print(f"\tTraining loss: {total_loss / total_size}")
-                    total_loss = 0
-                    total_size = 0
-
-                    equinox.tree_serialise_leaves(model_pytree_save_file, transformer)
-
-                    if evaluate:
-                        val_loss = eval_model(
-                            transformer, data_loader, prng_key, val_iters
-                        )
-                        print(f"\tValidation loss: {val_loss}")
-
-                    end_time = time.time()
-                    elapsed_time = end_time - start_time
-                    print(f"\tElapsed time: {elapsed_time} seconds")
-                    start_time = end_time
-
-                continue
 
             total_loss += loss
-            total_size += 1
-            if (step % epoch_size) == 0 or step == num_steps - 1:
+            if ((step + 1) % epoch_size) == 0 or step == num_steps - 1:
                 print(f"Epoch: {(step + 1) // epoch_size}")
 
-                # print(f"Loss: {loss}, Total: {total_loss}, Size: {total_size}")
-                print(f"\tTraining loss: {total_loss / total_size}")
+                print(f"\tTraining loss: {total_loss / num_steps}")
                 total_loss = 0
-                total_size = 0
 
                 equinox.tree_serialise_leaves(model_pytree_save_file, transformer)
 
@@ -769,7 +739,7 @@ parser.add_argument(
     "-m",
     "--model-pytree-save-file",
     type=str,
-    help="File to load pytree from. Default is 'blm.eqx'",
+    help="File to save & load pytree from. Overwrites file on save. Default is 'blm.eqx'",
     default=get_file_path("transformer.eqx", __file__),
 )
 parser.add_argument(
