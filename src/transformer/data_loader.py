@@ -15,6 +15,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Optional
 
+import jax
 import jax.numpy as jnp
 import jax.random as jrand
 from jax import Array
@@ -74,7 +75,7 @@ def get_bespoke_tokenizer(
 
 
 BATCH_SIZE = 4
-BLOCK_SIZE = 8
+CONTEXT_SIZE = 8
 
 JRAND_SEED = 0
 
@@ -91,7 +92,7 @@ class TransformerDataLoader:
     _val_data: Array
 
     batch_size: int
-    block_size: int
+    context_size: int
 
     _prng_key: Array
 
@@ -103,7 +104,7 @@ class TransformerDataLoader:
         tokenizer: RegexTokenizer = None,
         encoding_save_file: Optional[str] = None,
         batch_size: int = BATCH_SIZE,
-        block_size: int = BLOCK_SIZE,
+        context_size: int = CONTEXT_SIZE,
         jrand_seed: int = JRAND_SEED,
     ):
         self.data_file = data_file
@@ -124,7 +125,7 @@ class TransformerDataLoader:
         self._val_data = None
 
         self.batch_size = batch_size
-        self.block_size = block_size
+        self.context_size = context_size
 
         self._prng_key = jrand.PRNGKey(jrand_seed)
 
@@ -170,14 +171,38 @@ class TransformerDataLoader:
         self._train_data = None
         self._val_data = None
 
-    def get_batch(self, train: bool = True) -> tuple[Array, Array]:
+    def refresh_data(self) -> tuple[Array, Array, Array]:
+        return self.data, self.train_data, self.val_data
+
+    def get_batch(
+        self, train: bool = True, prng_key: Optional[Array] = None
+    ) -> tuple[Array, Array, Array]:
+        """
+        In order to jit this function, a prng_key must be passed and
+        refresh_data must be called
+        """
+        if prng_key is None:
+            prng_key = self.prng_key
+
         data = self.train_data if train else self.val_data
+
+        prng_key, subkey = jrand.split(prng_key)
         ix = jrand.randint(
-            self.prng_key, (self.batch_size,), 0, len(data) - self.block_size
+            subkey,
+            (self.batch_size,),
+            0,
+            len(data) - self.context_size,
         )
-        x = jnp.stack([data[i : i + self.block_size] for i in ix])
-        y = jnp.stack([data[i + 1 : i + self.block_size + 1] for i in ix])
-        return x, y
+        iy = jnp.add(ix, 1)
+
+        def slice_single(start: Array) -> Array:
+            return jax.lax.dynamic_slice(data, (start,), (self.context_size,))
+
+        x = jnp.stack(jax.vmap(slice_single)(ix))
+        y = jnp.stack(jax.vmap(slice_single)(iy))
+        # x = jnp.stack([data[i : i + self.context_size] for i in ix])
+        # y = jnp.stack([data[i + 1 : i + self.context_size + 1] for i in ix])
+        return x, y, prng_key
 
     @property
     def data(self) -> Array:
@@ -202,10 +227,10 @@ class TransformerDataLoader:
 
     @property
     def vocab_size(self) -> int:
-        if self.encoding is None:
+        if self.tokenizer is None:
             return 0
 
-        return len(set(self.encoding))
+        return len(self.tokenizer.vocab)
 
     @property
     def prng_key(self) -> Array:
