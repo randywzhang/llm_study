@@ -227,10 +227,10 @@ class TransformerDataLoader:
 
     @property
     def vocab_size(self) -> int:
-        if self.encoding is None:
+        if self.tokenizer is None:
             return 0
 
-        return len(set(self.encoding))
+        return len(self.tokenizer.vocab)
 
     @property
     def prng_key(self) -> Array:
