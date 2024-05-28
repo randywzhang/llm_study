@@ -445,7 +445,6 @@ def make_step(
 VAL_ITERS = 200  # validation loops
 
 
-# TODO: figure out a way to use jax instead of python for loop
 @equinox.filter_jit
 def eval_model(
     model: equinox.Module,
