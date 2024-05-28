@@ -739,7 +739,7 @@ parser.add_argument(
     "-m",
     "--model-pytree-save-file",
     type=str,
-    help="File to load pytree from. Default is 'blm.eqx'",
+    help="File to save & load pytree from. Overwrites file on save. Default is 'blm.eqx'",
     default=get_file_path("transformer.eqx", __file__),
 )
 parser.add_argument(
