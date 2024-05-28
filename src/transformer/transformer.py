@@ -455,34 +455,25 @@ def eval_model(
 ) -> float:
     model = nn.inference_mode(model)
     total_loss: float = 0
-    n_iters: int = 0
 
-    # def aggregate_loss(
-    #     init_val: tuple[float, int, Array], _x: int
-    # ) -> tuple[float, int]:
-    #     total_loss, n_iters, prng_key = init_val
-    #     xv, yv, prng_key = data_loader.get_batch(train=False, prng_key=prng_key)
-    #     loss = compute_loss(model, xv, yv)
-
-    #     return total_loss + loss, n_iters + 1, prng_key
-
-    # total_loss, n_iters = jax.lax.scan(
-    #     aggregate_loss,
-    #     (total_loss, n_iters, prng_key),
-    #     jnp.ones(val_iters),
-    # )
-
-    for _ in range(val_iters):
-        prng_key, subkey = jrand.split(prng_key)
-        xv, yv, prng_key = data_loader.get_batch(train=False, prng_key=subkey)
+    def aggregate_loss(
+        init_val: tuple[float, int, Array], _x: int
+    ) -> tuple[float, int, Array]:
+        total_loss, prng_key = init_val
+        xv, yv, prng_key = data_loader.get_batch(train=False, prng_key=prng_key)
         loss = compute_loss(model, xv, yv)
 
-        total_loss += loss
-        n_iters += 1
+        return (total_loss + loss, prng_key), _x
+
+    (total_loss, _), _ = jax.lax.scan(
+        aggregate_loss,
+        (total_loss, prng_key),
+        jnp.ones(val_iters),
+    )
 
     model = nn.inference_mode(model, value=False)
 
-    return total_loss / n_iters
+    return total_loss / val_iters
 
 
 NUM_NEW_TOKENS = 100
@@ -601,8 +592,6 @@ def main(
 
                 print(f"\tTraining loss: {total_loss / num_steps}")
                 total_loss = 0
-
-                equinox.tree_serialise_leaves(model_pytree_save_file, transformer)
 
                 if evaluate:
                     val_loss = eval_model(transformer, data_loader, prng_key, val_iters)

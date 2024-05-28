@@ -200,8 +200,6 @@ class TransformerDataLoader:
 
         x = jnp.stack(jax.vmap(slice_single)(ix))
         y = jnp.stack(jax.vmap(slice_single)(iy))
-        # x = jnp.stack([data[i : i + self.context_size] for i in ix])
-        # y = jnp.stack([data[i + 1 : i + self.context_size + 1] for i in ix])
         return x, y, prng_key
 
     @property
